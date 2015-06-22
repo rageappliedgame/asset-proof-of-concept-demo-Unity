@@ -62,7 +62,23 @@ namespace asset_proof_of_concept_demo_CSharp
 		String fId2 = "Hello2.txt";
 		
 		String fData = "Hello Storage World";
-		
+
+		/// <summary>
+		/// Executes the load operation.
+		/// </summary>
+		public String doLoad(String fn) {
+			IDataStorage ds = getInterface<IDataStorage>();
+			
+			if (ds != null)
+			{
+				return ds.Load(fn);
+			}
+			else
+			{
+				return FileStorage[fn];
+			}
+		}
+
 		/// <summary>
 		/// Executes the store operation.
 		/// </summary>
@@ -119,27 +135,17 @@ namespace asset_proof_of_concept_demo_CSharp
 		/// <summary>
 		/// Executes the list operation.
 		/// </summary>
-		public void doList()
+		public List<String> doList()
 		{
 			IDataStorage ds = getInterface<IDataStorage>();
 			
 			if (ds != null)
 			{
-				Console.WriteLine("----[bridge]-----");
-				
-				foreach (String fn in ds.Files())
-				{
-					Console.WriteLine("{0}={1}", fn, ds.Load(fn));
-				}
+				return ds.Files();
 			}
 			else
 			{
-				Console.WriteLine("----[default]-----");
-				
-				foreach (String fn in FileStorage.Keys)
-				{
-					Console.WriteLine("{0}={1}", fn, FileStorage[fn]);
-				}
+				return FileStorage.Keys.ToList();
 			}
 		}
 		

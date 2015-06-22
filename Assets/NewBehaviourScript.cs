@@ -105,6 +105,9 @@ public class NewBehaviourScript : MonoBehaviour,
 
 		bridge2.Prefix = "private bridge: ";
 
+		// For Unity3D we need a bridge as Console.WriteLine is not supported and we have to use Debug.log() instead!
+		asset3.Bridge=bridge2;
+
 		//! Unity3D - These will not log until a bridge is attached. 
 		//! Default behavior is Console.WriteLine that compiles, but does not show up in the Console Window.
 		asset3.log("Asset1: " + asset1.Class + ", " + asset1.Id);
@@ -130,7 +133,7 @@ public class NewBehaviourScript : MonoBehaviour,
 		
 		// Replace the 1st Logger's log method by a native version supplied by the Game Engine. 
 		// 
-		asset3.Bridge = bridge2;
+		asset2.Bridge = bridge2;
 		
 		// Check the results for both Loggers differ (one message goes to the console, the other shows as an alert). 
 		// 
@@ -138,29 +141,53 @@ public class NewBehaviourScript : MonoBehaviour,
 
 		#region IDataStorage and IDataArchive
 
+		asset3.log("----[assetmanager.bridge]-----");
 		asset2.doStore();   // Create Hello1.txt and Hello2.txt
-		asset2.doList();    // List
+		foreach (String fn in asset2.doList()) // List
+		{
+			asset3.log(String.Format("{0}={1}", fn, asset2.doLoad(fn)));
+		}
 		asset2.doRemove();  // Remove Hello1.txt
-		asset2.doList();    // List
+
+		foreach (String fn in asset2.doList()) // List
+		{
+			asset3.log(String.Format("{0}={1}", fn, asset2.doLoad(fn)));
+		}
 		asset2.doArchive(); // Move Hello2.txt
 		
-		//! Reset/Remove Both Bridges
+		asset3.log("----[default]-----");
+
+		//! Reset/Remove Both Bridges.
 		// 
-		asset3.Bridge = null;
+		asset2.Bridge = null;
 		
 		AssetManager.Instance.Bridge = null;
 		
-		asset2.doList();
+		foreach (String fn in asset2.doList()) // List
+		{
+			asset3.log(String.Format("{0}={1}", fn, asset2.doLoad(fn)));
+		}
 		asset2.doStore();
-		
+
+		asset3.log("----[private.bridge]-----");
+
 		asset2.Bridge = bridge2;
 		
 		asset2.doStore();
-		asset2.doList();
-		
+
+		foreach (String fn in asset2.doList()) // List
+		{
+			asset3.log(String.Format("{0}={1}", fn, asset2.doLoad(fn)));
+		}
+
+		asset3.log("----[default]-----");
+
 		asset2.Bridge = null;
 		
-		asset2.doList();
+		foreach (String fn in asset2.doList()) // List
+		{
+			asset3.log(String.Format("{0}={1}", fn, asset2.doLoad(fn)));
+		}
 
 		#endregion IDataStorage and IDataArchive
 
@@ -196,7 +223,7 @@ public class NewBehaviourScript : MonoBehaviour,
 			
 			pubsubz.unsubscribe(eventId);
 		}
-		
+
 		//! Using anonymous delegate.
 		// 
 		{
@@ -220,13 +247,13 @@ public class NewBehaviourScript : MonoBehaviour,
 		
 		//! Test if we can re-register without creating new stuff in the register (i.e. get the existing unique id returned). 
 		// 
-		Console.WriteLine("Trying to re-register: {0}", AssetManager.Instance.registerAssetInstance(asset4, asset4.Class));
+		asset3.log(String.Format("Trying to re-register: {0}", AssetManager.Instance.registerAssetInstance(asset4, asset4.Class)));
 		
 		#region DialogAsset
 		
 		//! DialogAsset.
 		// 
-		asset5.LoadScript("me", "script.txt");
+		asset5.LoadScript("me", "Assets/script.txt");
 		
 		// Interacting using ask/tell 
 		

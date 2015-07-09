@@ -8,7 +8,7 @@ namespace asset_proof_of_concept_demo_CSharp
 	using System;
 	using System.Collections.Generic;
 	
-	interface IDataStorage
+	public interface IDataStorage
 	{
 		/// <summary>
 		/// Exists the given file.

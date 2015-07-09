@@ -10,7 +10,7 @@ namespace asset_proof_of_concept_demo_CSharp
 	/// <summary>
 	/// Interface for logger.
 	/// </summary>
-	interface ILogger
+	public interface ILogger
 	{
 		/// <summary>
 		/// The prefix.

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<version>
+  <id>Dialogueasset</id>
+  <major>1</major>
+  <minor>2</minor>
+  <build>3</build>
+  <revision>25</revision>
+  <maturity>alpha</maturity>
+  <dependencies>
+    <depends>Logger</depends>
+  </dependencies>
+</version>

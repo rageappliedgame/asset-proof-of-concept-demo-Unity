@@ -23,3 +23,8 @@
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
+
+# Demo code output
+Archive/*
+*.dll
+*.asset

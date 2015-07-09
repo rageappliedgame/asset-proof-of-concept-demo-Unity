@@ -66,6 +66,12 @@ namespace asset_proof_of_concept_demo_CSharp
 		/// <summary>
 		/// Executes the load operation.
 		/// </summary>
+		///
+		/// <param name="fn"> The filename. </param>
+		///
+		/// <returns>
+		/// A String.
+		/// </returns>
 		public String doLoad(String fn) {
 			IDataStorage ds = getInterface<IDataStorage>();
 			
@@ -135,6 +141,10 @@ namespace asset_proof_of_concept_demo_CSharp
 		/// <summary>
 		/// Executes the list operation.
 		/// </summary>
+		///
+		/// <returns>
+		/// A List&lt;String&gt;
+		/// </returns>
 		public List<String> doList()
 		{
 			IDataStorage ds = getInterface<IDataStorage>();

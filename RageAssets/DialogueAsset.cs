@@ -11,7 +11,7 @@ namespace asset_proof_of_concept_demo_CSharp
     using System.IO;
     using System.Linq;
 
-    class DialogueAsset : BaseAsset
+	public class DialogueAsset : BaseAsset
     {
         #region Fields
 
@@ -159,9 +159,9 @@ namespace asset_proof_of_concept_demo_CSharp
         ///
         /// <param name="actor"> The actor. </param>
         /// <param name="url">   URL of the document. </param>
-        public void LoadScript(String actor, String url)
+        public void LoadScript(String actor, String ns, String res)
         {
-            String[] lines = File.ReadAllLines(url);
+			String[] lines = GetEmbeddedResource(ns, res).Split(new Char[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
 
             //! Missing is the line 'banana: I hate bananas'.
 

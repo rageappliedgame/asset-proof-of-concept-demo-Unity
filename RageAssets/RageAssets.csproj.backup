@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5F0278C0-1593-448C-AE18-4FCA67D6E0D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>asset_proof_of_concept_demo_CSharp</RootNamespace>
+    <AssemblyName>RageAssets</AssemblyName>
+    <newfilesearch>OnLoad</newfilesearch>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <!-- Look up Unity install folder, and set the ReferencePath for locating managed assembly references. -->
+    <UnityInstallFolder>$(registry:HKEY_CURRENT_USER\Software\Unity Technologies\Installer\Unity@Location x64)</UnityInstallFolder>
+    <ReferencePath>$(UnityInstallFolder)\Editor\Data\</ReferencePath>
+    <MonoFolder>$(UnityInstallFolder)\Editor\Data\MonoBleedingEdge</MonoFolder>
+    <MonoMdbGenerator>$(MonoFolder)\lib\mono\4.5\pdb2mdb.exe</MonoMdbGenerator>
+    <MonoCLI>$(MonoFolder)\bin\cli.bat</MonoCLI>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>..\Assets</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>..\Assets</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="DialogueAsset.cs" />
+    <Compile Include="pubSubz.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="IVersionAndDependencies.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="IDataStorage.cs" />
+    <Compile Include="IDataArchive.cs" />
+    <Compile Include="IAsset.cs" />
+    <Compile Include="BaseAsset.cs" />
+    <Compile Include="AssetManager.cs" />
+    <Compile Include="Asset.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="script.txt" />
+    <EmbeddedResource Include="Resources\Asset.VersionAndDependencies.xml" />
+    <EmbeddedResource Include="Resources\BaseAsset.VersionAndDependencies.xml" />
+    <EmbeddedResource Include="Resources\DialogueAsset.VersionAndDependencies.xml" />
+    <EmbeddedResource Include="Resources\Logger.VersionAndDependencies.xml" />
+  </ItemGroup>
+  <Target Name="AfterBuild">
+    <CallTarget Targets="GenerateMonoSymbols" Condition=" Exists('$(OutputPath)\$(AssemblyName).pdb') " />
+  </Target>
+  <Target Name="GenerateMonoSymbols">
+    <Message Text="Unity install folder: $(UnityInstallFolder)" Importance="high" />
+    <Message Text="$(ProjectName) -&gt; $(TargetPath).mdb" Importance="High" />
+    <Exec Command="&quot;$(MonoCLI)&quot; &quot;$(MonoMdbGenerator)&quot; $(AssemblyName).dll" WorkingDirectory="$(MSBuildProjectDirectory)\$(OutputPath)" />
+  </Target>
+</Project>

@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
 using asset_proof_of_concept_demo_CSharp;
 
 /// <summary>
@@ -124,6 +125,8 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
         Test_06_SanityChecks();
 
         Test_07_DialogueAsset(this);
+
+        Test_08_Settings(this);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -386,32 +389,38 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
         Console.WriteLine("Trying to re-register: {0}", AssetManager.Instance.registerAssetInstance(asset4, asset4.Class));
     }
 
-	public Text dialogueText;
+    public Text dialogueText;
 
     /// <summary>
     /// Tests 07 dialogue asset.
     /// </summary>
-	private static void Test_07_DialogueAsset(NewBehaviourScript script)
+    private static void Test_07_DialogueAsset(NewBehaviourScript script)
     {
         //! DialogAsset.
         //
 
-		asset5.LoadScript("me", typeof(DialogueAsset).Namespace, "script.txt");
-		
-		// Interacting using ask/tell
-		script.dialogueText.text = asset5.interact("me", "player", "banana").text;
+        asset5.LoadScript("me", typeof(DialogueAsset).Namespace, "script.txt");
 
-		//Text go = (Text)GameObject.Find("/Text");
+        // Interacting using ask/tell
+        script.dialogueText.text = asset5.interact("me", "player", "banana").text;
+
+        //Text go = (Text)GameObject.Find("/Text");
 
         // Interacting using branches
         //
-		script.dialogueText.text = asset5.interact("me", "player").text;
-		script.dialogueText.text = asset5.interact("me", "player", 2).text; //Answer id 2
+        script.dialogueText.text = asset5.interact("me", "player").text;
+        script.dialogueText.text = asset5.interact("me", "player", 2).text; //Answer id 2
 
-		script.dialogueText.text = asset5.interact("me", "player").text;
-		script.dialogueText.text = asset5.interact("me", "player", 6).text; //Answer id 6
+        script.dialogueText.text = asset5.interact("me", "player").text;
+        script.dialogueText.text = asset5.interact("me", "player", 6).text; //Answer id 6
 
-		script.dialogueText.text = asset5.interact("me", "player").text;
+        script.dialogueText.text = asset5.interact("me", "player").text;
+    }
+
+    private static void Test_08_Settings(NewBehaviourScript script)
+    {
+        //script.dialogueText.text = asset1.DefaultSettings.Count.ToString();//["NewKey0"].;
+        Debug.Log(asset1.DefaultSettings);
     }
 
     // Use this for initialization

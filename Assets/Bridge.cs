@@ -1,7 +1,7 @@
 ﻿// <copyright file="Bridge.cs" company="RAGE"> Copyright (c) 2015 RAGE. All rights reserved.
 // </copyright>
 // <author>Veg</author>
-// <date>13-4-2015</date>
+// <date>27-7-2015</date>
 // <summary>Implements a Bridge with 3 interfaces</summary>
 using UnityEngine;
 

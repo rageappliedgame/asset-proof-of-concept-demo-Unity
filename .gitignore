@@ -25,6 +25,10 @@
 sysinfo.txt
 
 # Demo code output
-Archive/*
+*/Archive/*
+*/DataStorage/*
 *.dll
 *.asset
+*.mdb
+*.pdb
+*.txt

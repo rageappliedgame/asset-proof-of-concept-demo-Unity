@@ -76,6 +76,19 @@ namespace asset_proof_of_concept_demo_CSharp
             get;
         }
 
+        /// <summary>
+        /// Gets or sets options for controlling the operation.
+        /// </summary>
+        ///
+        /// <value>
+        /// The settings.
+        /// </value>
+        ISettings Settings
+        {
+            get;
+            set;
+        }
+
         #endregion Properties
     }
 }

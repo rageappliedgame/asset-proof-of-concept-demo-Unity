@@ -35,17 +35,16 @@ namespace asset_proof_of_concept_demo_CSharp
         public void log(String msg)
         {
             //! See what bridge code to call, Asset, Asset Manager or just expose Default behavior (if any).
-
-            if (Bridge != null && Bridge is ILogger)
+            // 
+            ILogger logger = getInterface<ILogger>();
+            if (logger != null)
             {
-                (Bridge as ILogger).doLog(msg);
-            }
-            else if (AssetManager.Instance.Bridge != null && AssetManager.Instance.Bridge is ILogger)
-            {
-                (AssetManager.Instance.Bridge as ILogger).doLog(msg);
+                // Use a supplied bridge.
+                logger.doLog(msg);
             }
             else
             {
+                // Default behavior.
                 Console.WriteLine(msg);
             }
         }

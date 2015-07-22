@@ -8,11 +8,15 @@ namespace asset_proof_of_concept_demo_CSharp
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Configuration;
     using System.Diagnostics;
     using System.IO;
     using System.Reflection;
+    using System.Text;
+    using System.Xml;
     using System.Xml.Linq;
+    using System.Xml.Serialization;
     using System.Xml.XPath;
 
     /// <summary>
@@ -48,6 +52,7 @@ namespace asset_proof_of_concept_demo_CSharp
     /// 
     /// <seealso cref="http://forum.unity3d.com/threads/how-to-build-and-debug-external-dlls.161685/"/>
     /// </summary>
+    [Serializable()]
     public class BaseAsset : IAsset
     {
         #region Fields
@@ -59,6 +64,16 @@ namespace asset_proof_of_concept_demo_CSharp
 
         #endregion Fields
 
+        public object GetDefault(Type t)
+        {
+            return this.GetType().GetMethod("GetDefaultGeneric").MakeGenericMethod(t).Invoke(this, null);
+        }
+
+        //public T GetDefaultGeneric<T>()
+        //{
+        //    return default(T);
+        //}
+        // 
         #region Constructors
 
         /// <summary>
@@ -117,6 +132,7 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The bridge.
         /// </value>
+        [XmlIgnoreAttribute]
         public object Bridge
         {
             get;
@@ -130,6 +146,7 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The class.
         /// </value>
+        //[XmlIgnoreAttribute]
         public String Class
         {
             get
@@ -149,8 +166,23 @@ namespace asset_proof_of_concept_demo_CSharp
         {
             get
             {
-                return XDocument.Parse
-                ("<Settings></Settings>").ToString(SaveOptions.None);
+                IDefaultSettings ds = getInterface<IDefaultSettings>();
+                if (ds != null && ds.HasDefaultSettings(Class, Id))
+                {
+                    //! Return Application Default Settings.
+                    // 
+                    return ds.LoadDefaultSettings(Class, Id);
+                }
+                else if (Settings != null)
+                {
+                    //! Return Default Settings.
+                    // 
+                    return Settings.ToXml();
+                }
+                else
+                {
+                    return BaseSettings.EmptySettings(Class);
+                }
             }
         }
 
@@ -161,6 +193,7 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The dependencies.
         /// </value>
+        [XmlIgnoreAttribute]
         public Dictionary<String, String> Dependencies
         {
             get
@@ -186,6 +219,7 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The identifier.
         /// </value>
+        [XmlIgnoreAttribute]
         public String Id
         {
             get;
@@ -199,6 +233,7 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The maturity.
         /// </value>
+        [XmlIgnoreAttribute]
         public String Maturity
         {
             get
@@ -214,6 +249,7 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The version.
         /// </value>
+        [XmlIgnoreAttribute]
         public String Version
         {
             get
@@ -226,6 +262,19 @@ namespace asset_proof_of_concept_demo_CSharp
                     XmlTagValue(versionXml, "version/build"),
                     XmlTagValue(versionXml, "version/revision")).TrimEnd('.');
             }
+        }
+
+        /// <summary>
+        /// Gets or sets options for controlling the operation.
+        /// </summary>
+        ///
+        /// <value>
+        /// The settings.
+        /// </value>
+        public virtual ISettings Settings
+        {
+            get;
+            set;
         }
 
         #endregion Properties
@@ -317,23 +366,11 @@ namespace asset_proof_of_concept_demo_CSharp
             return String.Empty;
         }
 
+        public String Save()
+        {
+            return Settings.ToXml();
+        }
+
         #endregion Methods
-
-        #region Other
-
-        //public Dictionary<String, String> DefaultSettings
-        //{
-        //    get
-        //    {
-        //        Dictionary<String, String> defaults = new Dictionary<String, String>();
-        //        foreach (String key in ConfigurationManager.AppSettings.Keys)
-        //        {
-        //            defaults.Add(key, ConfigurationManager.AppSettings[key]);
-        //        }
-        //        return defaults;
-        //    }
-        //}
-
-        #endregion Other
     }
 }

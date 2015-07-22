@@ -420,7 +420,19 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
     private static void Test_08_Settings(NewBehaviourScript script)
     {
         //script.dialogueText.text = asset1.DefaultSettings.Count.ToString();//["NewKey0"].;
+
+        // Default Settings
         Debug.Log(asset1.DefaultSettings);
+
+        // App Default Settings
+        asset2.Bridge = bridge1;
+        Debug.Log(asset2.DefaultSettings);
+
+        // No Settings
+        Debug.Log(asset3.DefaultSettings);
+
+        // Save Settings
+        Debug.Log(asset1.Save());
     }
 
     // Use this for initialization

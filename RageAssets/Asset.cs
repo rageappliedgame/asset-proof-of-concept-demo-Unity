@@ -10,10 +10,15 @@ namespace asset_proof_of_concept_demo_CSharp
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
+    using System.Xml.Serialization;
 
     /// <summary>
     /// An asset.
     /// </summary>
+    //[XmlRoot(Namespace = "www.rage.com",
+    //     ElementName = "Asset",
+    //     DataType = "string",
+    //     IsNullable = true)]
     public class Asset : BaseAsset
     {
         #region Fields
@@ -21,7 +26,10 @@ namespace asset_proof_of_concept_demo_CSharp
         String fData = "Hello Storage World";
         String fId1 = "Hello1.txt";
         String fId2 = "Hello2.txt";
+
         private Dictionary<String, String> FileStorage = new Dictionary<String, String>();
+
+        private AssetSettings settings = null;
 
         #endregion Fields
 
@@ -33,26 +41,43 @@ namespace asset_proof_of_concept_demo_CSharp
         public Asset()
             : base()
         {
-            // Nothing yet
+            //! Create Settings and let it's BaseSettings class assign Defaultvalues where it can.
+            // 
+            settings = new AssetSettings();
+
+            settings.TestProperty += "test";
+
+            //! Assign other properties values if necessary;
+            // 
+            //settings.TestList = new String[] { "Hello", "World" };
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public override string DefaultSettings
+        /// <summary>
+        /// Gets or sets options for controlling the operation.
+        /// </summary>
+        ///
+        /// <remarks>   Besides the toXml() and fromXml() methods, we never use this property but use
+        ///                it's correctly typed backing field 'settings' instead. </remarks>
+        /// <remarks> This property should go into each asset having Settings of its own. </remarks>
+        /// <remarks>   The actual class used should be derived from BaseAsset (and not directly from
+        ///             ISetting). </remarks>
+        ///
+        /// <value>
+        /// The settings.
+        /// </value>
+        public override ISettings Settings
         {
             get
             {
-                XDocument doc = new XDocument(
-                    new XElement("Settings",
-                        new XElement("Setting",
-                            new XAttribute("name", "hw"),
-                            new XText("Hello Asset World")
-                        )
-                    )
-                );
-                return doc.ToString(SaveOptions.None);
+                return settings;
+            }
+            set
+            {
+                settings = (value as AssetSettings);
             }
         }
 

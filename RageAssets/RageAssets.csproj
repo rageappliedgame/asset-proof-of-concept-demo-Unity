@@ -39,17 +39,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DialogueAsset.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="IVersionAndDependencies.cs" />
     <Compile Include="ILogger.cs" />
-    <Compile Include="IDataStorage.cs" />
     <Compile Include="IDataArchive.cs" />
     <Compile Include="Asset.cs" />
     <Compile Include="Settings.cs" />

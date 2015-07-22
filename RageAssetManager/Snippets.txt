@@ -1,0 +1,482 @@
+﻿
+//public object GetDefault(Type t)
+//{
+//    return this.GetType().GetMethod("GetDefaultGeneric").MakeGenericMethod(t).Invoke(this, null);
+//}
+
+//public T GetDefaultGeneric<T>()
+//{
+//    return default(T);
+//}
+
+
+#region Other
+
+//public Dictionary<String, String> DefaultSettings
+//{
+//    get
+//    {
+//        Dictionary<String, String> defaults = new Dictionary<String, String>();
+//        foreach (String key in ConfigurationManager.AppSettings.Keys)
+//        {
+//            defaults.Add(key, ConfigurationManager.AppSettings[key]);
+//        }
+//        return defaults;
+//    }
+//}
+
+#endregion Other
+
+//using (IniFile ini = new IniFile(null))
+//{
+//    ini.RawSections.AddRange(this.RawSection.ToArray());
+
+//    foreach (PropertyInfo pi in GetType().GetProperties())
+//    {
+//        if (!HasAttribute<SkipSettingAttribute>(pi))
+//        {
+//            ReadProperty(ini, this.GetType().Name, this, pi);
+//        }
+//    }
+
+//    ini.UpdateFile();
+//}
+
+/// <summary>
+/// Test for the presence of a EncrytpSetting.
+/// </summary>
+/// <param name="prop">The property to examine.</param>
+/// <returns>true if a SectionAttribute was found, else false.</returns>
+//private static Boolean HasEncryptSettingAttribute(PropertyInfo prop)
+//{
+//    object[] atts = prop.GetCustomAttributes(typeof(EncryptSettingAttribute), false);
+
+//    foreach (Object att in atts)
+//    {
+//        if (att is EncryptSettingAttribute)
+//        {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+
+//private static Boolean HasAttribute<T>(PropertyInfo prop)
+//{
+//    object[] atts = prop.GetCustomAttributes(typeof(T), false);
+
+//    foreach (Object att in atts)
+//    {
+//        if (att is T)
+//        {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+
+//private static T GetAttribute<T>(PropertyInfo prop)
+//{
+//    object[] atts = prop.GetCustomAttributes(typeof(T), false);
+
+//    foreach (Object att in atts)
+//    {
+//        if (att is T)
+//        {
+//            return (T)att;
+//        }
+//    }
+//    return default(T);
+//}
+
+/*
+/// <summary>
+/// Fixes numbers (replaces . and , with the actual decimal separator.
+/// </summary>
+///
+/// <param name="number"> The Number to fix. </param>
+///
+/// <returns>
+/// A String.
+/// </returns>
+private String Fix(String number)
+{
+    return number.Trim().
+        Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).
+        Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+}
+
+/// <summary>
+/// Reads a property.
+/// </summary>
+///
+/// <param name="ic">      The iniFile. </param>
+/// <param name="section"> The section. </param>
+/// <param name="obj">     The object. </param>
+/// <param name="info">    The information. </param>
+private void ReadProperty(IniFile ic, String section, Object obj, PropertyInfo info)
+{
+    string nam = info.Name;                            //Get Name from S
+    string typ = info.PropertyType.Name;               //Get Type from S
+
+    //Note: String properties must have an Initial Value or GetValue/SetValue will fail!.
+    string defval = "";
+    if (info.GetValue(obj, null) != null)
+    {
+        defval = info.GetValue(obj, null).ToString();
+    }
+
+    if (ic.ValueExists(section, nam))
+    {
+        String val = String.Empty;
+
+        if (HasAttribute<EncryptSettingAttribute>(info))
+        {
+            val = ic.ReadEncryptedString(section, nam, defval, sak);
+        }
+        else
+        {
+            val = ic.ReadString(section, nam, defval);
+        }
+
+        //Name.Equals("Enum") fails as Name returns the declared type like "SetupOptions"
+        //BaseType.Name should work, but returns ValueType for Int32.
+        try
+        {
+            if (info.PropertyType.IsEnum)
+            {
+                //For Enums
+                info.SetValue(obj, Enum.Parse(info.PropertyType, val), null);
+            }
+            else if (typ.Equals("Int32"))
+            {
+                //For Integer Values
+                info.SetValue(obj, Int32.Parse(val), null);
+            }
+            else if (typ.Equals("Double"))
+            {
+                //For Double Values, Replace Decimal Separators by Correct One..
+                info.SetValue(obj, Double.Parse(Fix(val),
+                    NumberStyles.AllowExponent | NumberStyles.Number), null);
+            }
+            else if (typ.Equals("String"))
+            {
+                //For String Values
+                info.SetValue(obj, val, null);
+            }
+            else if (typ.Equals("Boolean"))
+            {
+                //Booleans need some more attention as values can be text (true|false) or numeric (1|0).
+                Boolean b = false;
+
+                //Try parse as text.
+                if (!Boolean.TryParse(val, out b))
+                {
+                    //Try parse as number.
+                    Int32 n = 0;
+                    if (Int32.TryParse(val, out n))
+                    {
+                        b = n != 0;
+                    }
+                    else
+                    {
+                        Debug.WriteLine(String.Format("Error Parsing Boolean Value: {0} for {1}", val, info.PropertyType.BaseType.Name));
+                    }
+                }
+                else
+                {
+                    //Try Parse Strings.
+                    if (val == true.ToString())
+                    {
+                        b = true;
+                    }
+                    else if (val == false.ToString())
+                    {
+                        b = false;
+                    }
+                    else
+                    {
+                        Debug.WriteLine(String.Format("Error Parsing Boolean Value: {0} for {1}", val, info.PropertyType.BaseType.Name));
+                    }
+                }
+
+                info.SetValue(obj, b, null);
+            }
+            else if (typ.Equals("Byte[]"))
+            {
+                //Val happens to be a hex string...
+                Int32 elementsize = 2 * sizeof(Byte);
+
+                Byte[] array = new Byte[val.Length / elementsize];
+
+                for (Int32 i = 0; i < array.Length; i++)
+                {
+                    array[i] = Convert.ToByte(val.Substring(i * elementsize, elementsize), 16);
+                }
+
+                info.SetValue(obj, array, null);
+            }
+            else if (typ.Equals("UInt16[]"))
+            {
+                //Val happens to be a hex string...
+                Int32 elementsize = 2 * sizeof(UInt16);
+
+                UInt16[] array = new UInt16[val.Length / elementsize];
+
+                for (Int32 i = 0; i < array.Length; i++)
+                {
+                    array[i] = Convert.ToUInt16(val.Substring(i * elementsize, elementsize), 16);
+                }
+
+                info.SetValue(obj, array, null);
+            }
+            else if (typ.Equals("UInt32[]"))
+            {
+                //Val happens to be a hex string...
+                Int32 elementsize = 2 * sizeof(UInt32);
+
+                UInt32[] array = new UInt32[val.Length / elementsize];
+
+                for (Int32 i = 0; i < array.Length; i++)
+                {
+                    array[i] = Convert.ToUInt32(val.Substring(i * elementsize, elementsize), 16);
+                }
+
+                info.SetValue(obj, array, null);
+            }
+            else
+            {
+                Debug.WriteLine(String.Format("Unsupported Property Type: {0} {1}", typ, info.PropertyType.BaseType.Name));
+            }
+        }
+        catch
+        {
+            Debug.WriteLine(String.Format("Error Setting Property: {0} to {1}", nam, val));
+        }
+    }
+}
+
+/// <summary>
+/// Writes a property.
+/// </summary>
+///
+/// <param name="ic">      The iniFile. </param>
+/// <param name="section"> The section. </param>
+/// <param name="obj">     The object. </param>
+/// <param name="info">    The information. </param>
+private void WriteProperty(IniFile ic, String section, Object obj, PropertyInfo info)
+{
+    //Writeout Data Object (Ignore Instance)...
+    string nam = info.Name;                             //Get Name from S
+    string val = "";
+    if (info.GetValue(obj, null) != null)
+    {
+        if (info.PropertyType.IsArray)
+        {
+            Array Elements = info.GetValue(obj, null) as Array;
+
+            Type ElementType = Elements.GetType().GetElementType();
+
+            Int32 size = 0;
+            String format = "";
+
+            switch (ElementType.Name)
+            {
+                case "SByte":
+                case "Byte":
+                    {
+                        size = 1;
+                        format = String.Format("X{0}", 2 * size);
+
+                        for (int i = 0; i < Elements.Length; i++)
+                        {
+                            val += System.Convert.ToByte(Elements.GetValue(i)).ToString(format);
+                        }
+                    }
+                    break;
+
+                case "Int16":
+                case "UInt16":
+                    {
+                        size = 2;
+                        format = String.Format("X{0}", 2 * size);
+
+                        for (int i = 0; i < Elements.Length; i++)
+                        {
+                            val += System.Convert.ToUInt16(Elements.GetValue(i)).ToString(format);
+                        }
+                    }
+                    break;
+
+                case "Int32":
+                case "UInt32":
+                    {
+                        size = 4;
+                        format = String.Format("X{0}", 2 * size);
+
+                        for (int i = 0; i < Elements.Length; i++)
+                        {
+                            val += System.Convert.ToUInt32(Elements.GetValue(i)).ToString(format);
+                        }
+                    }
+                    break;
+
+                default:
+                    Debug.WriteLine(String.Format("Unsupported Array Type {0}", ElementType.Name));
+                    break;
+            }
+        }
+        else
+        {
+            val = info.GetValue(obj, null).ToString();      //Get Value from S if any
+        }
+    }
+    string typ = info.PropertyType.Name;                //Get Type from S
+
+    DescriptionAttribute da = GetAttribute<DescriptionAttribute>(info);
+    string cmt = da == null ? typ : da.Description;
+
+    if (HasAttribute<EncryptSettingAttribute>(info))
+    {
+        ic.WriteEncryptedString(section, nam, val, sak, cmt);
+    }
+    else
+    {
+        ic.WriteString(section, nam, val, cmt);
+    }
+}
+*/
+
+private String SerializeMe()
+{
+    Type t = GetType();
+
+    /*
+        * 
+        * Automatic Serialization (driven by attributes).
+        * 
+    //<?xml version="1.0" encoding="utf-16"?>
+    //<Asset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    //  <TestProperty>abcdefgi</TestProperty>
+    //</Asset>
+
+    XmlSerializer ser = new XmlSerializer(t);
+
+    // TextWriter writer = new StreamWriter(filename);
+    using (StringWriter textWriter = new StringWriter())
+    {
+        //DataContractJsonSerializer
+        ser.Serialize(textWriter, this);
+
+        textWriter.Flush();
+
+        String xml = textWriter.ToString();
+
+        return XDocument.Parse(xml).ToString(SaveOptions.None);
+    }
+    */
+
+    XmlWriterSettings settings = new XmlWriterSettings();
+    settings.Indent = true;
+    settings.Encoding = Encoding.UTF8;
+
+    using (MemoryStream ms = new MemoryStream())
+    {
+        using (XmlWriter writer = XmlWriter.Create(ms, settings))
+        {
+            // <?xml version="1.0" encoding="utf-8"?>
+            writer.WriteStartDocument();
+
+            // <nxGridData>
+            writer.WriteStartElement(Class);
+            {
+                writer.WriteStartElement("Properties");
+                foreach (PropertyInfo pi in GetType().GetProperties())
+                {
+                    if (pi.CanRead && pi.CanWrite)
+                    {
+                        writer.WriteStartElement("Property");
+                        writer.WriteAttributeString("Name", pi.Name);
+                        writer.WriteCData(pi.GetValue(this, new Object[] { }).ToString());
+                        writer.WriteEndElement();
+                    }
+                }
+                writer.WriteEndElement();
+
+            }
+            writer.WriteEndElement();
+
+            writer.WriteEndDocument();
+
+            writer.Close();
+        }
+
+        return Encoding.UTF8.GetString(ms.ToArray());
+    }
+}
+
+/// <summary>
+/// Gets default values overrides.
+/// 
+/// See http://objectmix.com/xml-soap/343227-force-default-values-serialization.html
+/// </summary>
+///
+/// <param name="type"> The type. </param>
+///
+/// <returns>
+/// The default values overrides.
+/// </returns>
+static public XmlAttributeOverrides GetDefaultValuesOverrides(Type type)
+{
+    XmlAttributeOverrides explicitOverrides = new XmlAttributeOverrides();
+
+    PropertyDescriptorCollection c = TypeDescriptor.GetProperties(type);
+
+    foreach (PropertyDescriptor p in c)
+    {
+        AttributeCollection attributes = p.Attributes;
+        DefaultValueAttribute defaultValue = (DefaultValueAttribute)attributes[typeof(DefaultValueAttribute)];
+
+        XmlIgnoreAttribute noXML = (XmlIgnoreAttribute)attributes[typeof(XmlIgnoreAttribute)];
+
+        XmlAttributeAttribute attribute = (XmlAttributeAttribute)attributes[typeof(XmlAttributeAttribute)];
+
+        if (defaultValue != null && noXML == null)
+        {
+            XmlAttributeAttribute xmlAttribute = new XmlAttributeAttribute(attribute != null ? attribute.AttributeName : p.Name);
+
+            XmlAttributes xmlAttributes = new XmlAttributes();
+
+            xmlAttributes.XmlAttribute = xmlAttribute;
+
+            explicitOverrides.Add(type, xmlAttribute.AttributeName, xmlAttributes);
+        }
+    }
+
+    return explicitOverrides;
+}
+
+/// <summary>
+/// Gets the default settings.
+/// </summary>
+///
+/// <value>
+/// The default settings.
+/// </value>
+[XmlIgnoreAttribute]
+public override string DefaultSettings
+{
+    get
+    {
+        XDocument doc = new XDocument(
+            new XElement("Settings",
+                new XElement("Setting",
+                    new XAttribute("name", "hw"),
+                    new XText("Hello Asset World")
+                )
+            )
+        );
+        return doc.ToString(SaveOptions.None);
+    }
+}
+

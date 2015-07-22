@@ -16,10 +16,28 @@ namespace asset_proof_of_concept_demo_CSharp
     /// <summary>
     /// A bridge.
     /// </summary>
-    class Bridge : ILogger, IDataStorage, IDataArchive
+    class Bridge : ILogger, IDataStorage, IDataArchive, IDefaultSettings
     {
-        const String StorageDir = @".\DataStorage";
-        const String ArchiveDir = @".\Archive";
+        /// <summary>
+        /// The storage dir for IDataStorage use. The folder will be located in the Unity Assets Folder.
+        /// </summary>
+        private static String StorageDir = Application.dataPath + "/DataStorage";
+
+        /// <summary>
+        /// The archive dir for IDataArchive use. The folder will be located in the Unity Assets Folder.
+        /// </summary>
+        private static String ArchiveDir = Application.dataPath + "/Archive";
+
+        /// <summary>
+        /// The resource dir for IDefaulSettings use.
+        /// </summary>
+        ///
+        /// <remarks>       This directory could be used to create and save for instance &lt;class&gt;
+        ///                 AppSettings.xml Setting files at edit time but NOT at run-time.</remarks>
+        /// <remarks>       Reading of files saved in this directory can be done with Unity's
+        ///                 Resources.Load() methods, where the name passed is the filename relative to
+        ///                 ResourceDir without file extension.</remarks>
+        private static String ResourceDir = Application.dataPath + "/Resources";
 
         /// <summary>
         /// Initializes a new instance of the asset_proof_of_concept_demo_CSharp.Bridge class.
@@ -220,5 +238,78 @@ namespace asset_proof_of_concept_demo_CSharp
 		}
 		*/
         #endregion
+
+        #region IDefaultSettings
+
+        private String DeriveAssetName(String Class, String Id)
+        {
+            return String.Format("{0}AppSettings", Class);
+        }
+
+        /// <summary>
+        /// Query if a 'Class' with Id has default settings.
+        /// </summary>
+        ///
+        /// <param name="Class"> The class. </param>
+        /// <param name="Id">    The identifier. </param>
+        ///
+        /// <returns>
+        /// true if default settings, false if not.
+        /// </returns>
+        public Boolean HasDefaultSettings(String Class, String Id)
+        {
+            String fn = DeriveAssetName(Class, Id);
+            TextAsset ta = Resources.Load(fn, typeof(TextAsset)) as TextAsset;
+            return ta != null;
+        }
+
+        /// <summary>
+        /// Loads default settings for a 'Class' with Id.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Note that in Unity the file has to be located in the Resource Directory of the Assets Folder.
+        /// </remarks>
+        ///
+        /// <param name="Class"> The class. </param>
+        /// <param name="Id">    The identifier. </param>
+        ///
+        /// <returns>
+        /// The default settings.
+        /// </returns>
+        public String LoadDefaultSettings(String Class, String Id)
+        {
+            TextAsset ta = Resources.Load(DeriveAssetName(Class, Id)) as TextAsset;
+
+            if (ta != null)
+            {
+                return ta.text;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Saves a default settings.
+        /// </summary>
+        ///
+        /// <param name="Class"> The class. </param>
+        /// <param name="Id">    The identifier. </param>
+        /// <param name="Xml">   The XML. </param>
+        public void SaveDefaultSettings(String Class, String Id, String Xml)
+        {
+            if (Application.isEditor)
+            {
+                File.WriteAllText(Path.Combine(ResourceDir, DeriveAssetName(Class, Id)), Xml);
+            }
+            else
+            {
+                Debug.Log("Warning: Cannot save resources at runtime!");
+            }
+        }
+
+        #endregion IDefaultSettings
     }
 }

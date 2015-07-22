@@ -45,10 +45,21 @@
   <ItemGroup>
     <Compile Include="AssetManager.cs" />
     <Compile Include="BaseAsset.cs" />
+    <Compile Include="BaseSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IAsset.cs" />
+    <Compile Include="IDataStorage.cs" />
+    <Compile Include="IDefaultSettings.cs" />
+    <Compile Include="ISettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IVersionAndDependencies.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="pubSubz.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Snippets.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

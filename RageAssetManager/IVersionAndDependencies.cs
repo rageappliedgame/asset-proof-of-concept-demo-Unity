@@ -9,11 +9,15 @@
 //------------------------------------------------------------------------------
 namespace asset_proof_of_concept_demo_CSharp
 {
-	using System;
+    using System;
 
-	[Obsolete("Using embedded XML Version and Dependencies")]
-	public interface IVersionAndDependencies
-	{
-		String VersionAndDependenciesXml(Type Class);
-	}
+    [Obsolete("Using embedded XML Version and Dependencies")]
+    public interface IVersionAndDependencies
+    {
+        #region Methods
+
+        String VersionAndDependenciesXml(Type Class);
+
+        #endregion Methods
+    }
 }

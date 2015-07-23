@@ -49,11 +49,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DialogueAsset.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="IVersionAndDependencies.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IDataArchive.cs" />
     <Compile Include="Asset.cs" />
-    <Compile Include="Settings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

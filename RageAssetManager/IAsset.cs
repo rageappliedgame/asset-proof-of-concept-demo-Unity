@@ -29,6 +29,18 @@ namespace asset_proof_of_concept_demo_CSharp
         }
 
         /// <summary>
+        /// Gets the dependencies.
+        /// </summary>
+        ///
+        /// <value>
+        /// The dependencies (A Dictionary of class=version pairs).
+        /// </value>
+        Dictionary<String, String> Dependencies
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the identifier.
         /// </summary>
         ///
@@ -36,18 +48,6 @@ namespace asset_proof_of_concept_demo_CSharp
         /// The identifier.
         /// </value>
         String Id
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the version.
-        /// </summary>
-        ///
-        /// <value>
-        /// The version.
-        /// </value>
-        String Version
         {
             get;
         }
@@ -65,18 +65,6 @@ namespace asset_proof_of_concept_demo_CSharp
         }
 
         /// <summary>
-        /// Gets the dependencies.
-        /// </summary>
-        ///
-        /// <value>
-        /// The dependencies (A Dictionary of class=version pairs).
-        /// </value>
-        Dictionary<String, String> Dependencies
-        {
-            get;
-        }
-
-        /// <summary>
         /// Gets or sets options for controlling the operation.
         /// </summary>
         ///
@@ -87,6 +75,18 @@ namespace asset_proof_of_concept_demo_CSharp
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets the version.
+        /// </summary>
+        ///
+        /// <value>
+        /// The version.
+        /// </value>
+        String Version
+        {
+            get;
         }
 
         #endregion Properties

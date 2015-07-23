@@ -7,6 +7,10 @@
     /// </summary>
     public interface ISettings
     {
+        #region Other
+
         //
+
+        #endregion Other
     }
 }

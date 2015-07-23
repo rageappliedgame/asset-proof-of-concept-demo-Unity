@@ -22,6 +22,8 @@
     /// </remarks>
     public interface IDefaultSettings
     {
+        #region Methods
+
         /// <summary>
         /// Query if a 'Class' with Id has default settings.
         /// </summary>
@@ -62,5 +64,7 @@
         /// <param name="Id">    The identifier. </param>
         /// <param name="Xml">   The XML. </param>
         void SaveDefaultSettings(String Class, String Id, String Xml);
+
+        #endregion Methods
     }
 }

@@ -11,6 +11,9 @@ namespace asset_proof_of_concept_demo_CSharp
     using System.IO;
     using System.Linq;
 
+    /// <summary>
+    /// A dialogue asset.
+    /// </summary>
 	public class DialogueAsset : BaseAsset
     {
         #region Fields
@@ -47,11 +50,32 @@ namespace asset_proof_of_concept_demo_CSharp
 
         #region Methods
 
+        /// <summary>
+        /// Interacts.
+        /// </summary>
+        ///
+        /// <param name="actor">    The actor. </param>
+        /// <param name="player">   The player. </param>
+        /// <param name="response"> The response. </param>
+        ///
+        /// <returns>
+        /// A Dialogue.
+        /// </returns>
         public Dialogue interact(String actor, String player, Int32 response)
         {
             return interact(actor, player, response.ToString());
         }
 
+        /// <summary>
+        /// Interacts.
+        /// </summary>
+        ///
+        /// <param name="actor">  The actor. </param>
+        /// <param name="player"> The player. </param>
+        ///
+        /// <returns>
+        /// A Dialogue.
+        /// </returns>
 		public Dialogue interact(String actor, String player)
 		{
 			return interact(actor, player, null);
@@ -64,6 +88,10 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <param name="actor">    The actor. </param>
         /// <param name="player">   The player. </param>
         /// <param name="response"> The response. </param>
+        ///
+        /// <returns>
+        /// A Dialogue.
+        /// </returns>
         public Dialogue interact(String actor, String player, String response)
         {
             Int32 state = FindStateIndex(actor, player);
@@ -158,9 +186,13 @@ namespace asset_proof_of_concept_demo_CSharp
         /// </summary>
         ///
         /// <param name="actor"> The actor. </param>
-        /// <param name="url">   URL of the document. </param>
+        /// <param name="ns">    URL of the document. </param>
+        /// <param name="res">   The resource. </param>        
         public void LoadScript(String actor, String ns, String res)
         {
+
+#warning this should changed to using the bridge (as now the script has to be compiled into the assembly.
+
 			String[] lines = GetEmbeddedResource(ns, res).Split(new Char[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
 
             //! Missing is the line 'banana: I hate bananas'.

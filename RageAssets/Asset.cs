@@ -27,8 +27,14 @@ namespace asset_proof_of_concept_demo_CSharp
         String fId1 = "Hello1.txt";
         String fId2 = "Hello2.txt";
 
+        /// <summary>
+        /// The file storage.
+        /// </summary>
         private Dictionary<String, String> FileStorage = new Dictionary<String, String>();
 
+        /// <summary>
+        /// Options for controlling the operation.
+        /// </summary>
         private AssetSettings settings = null;
 
         #endregion Fields

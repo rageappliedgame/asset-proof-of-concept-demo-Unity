@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityVS.asset-proof-of-concept-demo-Unity.CSharp", "UnityVS.asset-proof-of-concept-demo-Unity.CSharp.csproj", "{2B1FC660-28B9-0474-84E2-CA40E0B7104E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F0278C0-1593-448C-AE18-4FCA67D6E0D2} = {5F0278C0-1593-448C-AE18-4FCA67D6E0D2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RageAssets", "RageAssets\RageAssets.csproj", "{5F0278C0-1593-448C-AE18-4FCA67D6E0D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RageAssetManager", "RageAssetManager\RageAssetManager.csproj", "{3F04C151-C087-4D84-9EA8-7DA3CD7639BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B1FC660-28B9-0474-84E2-CA40E0B7104E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B1FC660-28B9-0474-84E2-CA40E0B7104E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B1FC660-28B9-0474-84E2-CA40E0B7104E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B1FC660-28B9-0474-84E2-CA40E0B7104E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F0278C0-1593-448C-AE18-4FCA67D6E0D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F0278C0-1593-448C-AE18-4FCA67D6E0D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F0278C0-1593-448C-AE18-4FCA67D6E0D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F0278C0-1593-448C-AE18-4FCA67D6E0D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F04C151-C087-4D84-9EA8-7DA3CD7639BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F04C151-C087-4D84-9EA8-7DA3CD7639BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F04C151-C087-4D84-9EA8-7DA3CD7639BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F04C151-C087-4D84-9EA8-7DA3CD7639BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

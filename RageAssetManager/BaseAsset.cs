@@ -52,7 +52,7 @@ namespace asset_proof_of_concept_demo_CSharp
     /// 
     /// <seealso cref="http://forum.unity3d.com/threads/how-to-build-and-debug-external-dlls.161685/"/>
     /// </summary>
-    [Serializable()]
+    [Serializable]
     public class BaseAsset : IAsset
     {
         #region Fields
@@ -64,16 +64,6 @@ namespace asset_proof_of_concept_demo_CSharp
 
         #endregion Fields
 
-        public object GetDefault(Type t)
-        {
-            return this.GetType().GetMethod("GetDefaultGeneric").MakeGenericMethod(t).Invoke(this, null);
-        }
-
-        //public T GetDefaultGeneric<T>()
-        //{
-        //    return default(T);
-        //}
-        // 
         #region Constructors
 
         /// <summary>
@@ -89,36 +79,23 @@ namespace asset_proof_of_concept_demo_CSharp
             //
             testSubscription = pubsubz.subscribe("EventSystem.Init", (topics, data) =>
                                                  {
-                                                     //This code fails in TypeScript (coded there as 'this.Id') as this points to the method and not the Asset.
+                                                     //! This code fails in TypeScript (coded there as 'this.Id') as this points to the method and not the Asset.
                                                      Console.WriteLine("[{0}].{1}: {2}", this.Id, topics, data);
                                                  });
 
             // http://www.mindthecube.com/blog/2009/11/reading-text-data-into-a-unity-game
             // http://forum.unity3d.com/threads/enabling-embedded-resources-with-webgl.326069/
 
-            //TextAsset bindata= Resources.Load("Asset.VersionAndDependencies") as TextAsset;
-            //Console.WriteLine(bindata.text);
-
-            //TextAsset scriptdata= Resources.Load("script.txt") as TextAsset;
-            //Console.WriteLine(scriptdata.text);
             Assembly me = GetType().Assembly;
 
             Console.WriteLine("RageAssets: {0}", GetType().Namespace);
             Console.WriteLine("RageAssets: {0}", me.FullName);
             Console.WriteLine("RageAssets: {0}", me.CodeBase);
 
-            //RageAssets, Version=1.0.5667.28223, Culture=neutral, PublicKeyToken=null
-
-            //asset_proof_of_concept_demo_CSharp.script.txt
-            //asset_proof_of_concept_demo_CSharp.Resources.Asset.VersionAndDependencies.xml
-            //asset_proof_of_concept_demo_CSharp.Resources.BaseAsset.VersionAndDependencies.xml
-            //asset_proof_of_concept_demo_CSharp.Resources.DialogueAsset.VersionAndDependencies.xml
-            //asset_proof_of_concept_demo_CSharp.Resources.Logger.VersionAndDependencies.xml
-
-            foreach (string name in me.GetManifestResourceNames())
-            {
-                Console.WriteLine("Resources: {0}", name);
-            }
+            //foreach (string name in me.GetManifestResourceNames())
+            //{
+            //    Console.WriteLine("Resources: {0}", name);
+            //}
         }
 
         #endregion Constructors
@@ -156,37 +133,6 @@ namespace asset_proof_of_concept_demo_CSharp
         }
 
         /// <summary>
-        /// Gets the default settings.
-        /// </summary>
-        ///
-        /// <value>
-        /// The default settings.
-        /// </value>
-        //public virtual String DefaultSettings
-        //{
-        //    get
-        //    {
-        //        IDefaultSettings ds = getInterface<IDefaultSettings>();
-        //        if (ds != null && ds.HasDefaultSettings(Class, Id))
-        //        {
-        //            //! Return Application Default Settings.
-        //            // 
-        //            return ds.LoadDefaultSettings(Class, Id);
-        //        }
-        //        else if (Settings != null)
-        //        {
-        //            //! Return Default Settings.
-        //            // 
-        //            return Settings.ToXml();
-        //        }
-        //        else
-        //        {
-        //            return BaseSettings.EmptySettings(Class);
-        //        }
-        //    }
-        //}
-
-        /// <summary>
         /// Gets the dependencies.
         /// </summary>
         ///
@@ -209,6 +155,21 @@ namespace asset_proof_of_concept_demo_CSharp
                 }
 
                 return dependencies;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this object has settings.
+        /// </summary>
+        ///
+        /// <value>
+        /// true if this object has settings, false if not.
+        /// </value>
+        public Boolean hasSettings
+        {
+            get
+            {
+                return Settings != null;
             }
         }
 
@@ -243,6 +204,19 @@ namespace asset_proof_of_concept_demo_CSharp
         }
 
         /// <summary>
+        /// Gets or sets options for controlling the operation.
+        /// </summary>
+        ///
+        /// <value>
+        /// The settings.
+        /// </value>
+        public virtual ISettings Settings
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the version.
         /// </summary>
         ///
@@ -264,37 +238,168 @@ namespace asset_proof_of_concept_demo_CSharp
             }
         }
 
-        /// <summary>
-        /// Gets or sets options for controlling the operation.
-        /// </summary>
-        ///
-        /// <value>
-        /// The settings.
-        /// </value>
-        public virtual ISettings Settings
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this object has settings.
-        /// </summary>
-        ///
-        /// <value>
-        /// true if this object has settings, false if not.
-        /// </value>
-        public Boolean hasSettings
-        {
-            get
-            {
-                return Settings != null;
-            }
-        }
-
         #endregion Properties
 
         #region Methods
+
+        public object GetDefault(Type t)
+        {
+            return this.GetType().GetMethod("GetDefaultGeneric").MakeGenericMethod(t).Invoke(this, null);
+        }
+
+        /// <summary>
+        /// Loads Settings object from Default (Design-time) Settings.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// In Unity Resources.Load() must be used and the files will be loaded a Assets\\Resources
+        /// Folder.
+        /// </remarks>
+        ///
+        /// <returns>
+        /// true if it succeeds, false if it fails.
+        /// </returns>
+        public Boolean LoadDefaultSettings()
+        {
+            IDefaultSettings ds = getInterface<IDefaultSettings>();
+
+            if (ds != null && hasSettings && ds.HasDefaultSettings(Class, Id))
+            {
+                String xml = ds.LoadDefaultSettings(Class, Id);
+
+                Settings = SettingsFromXml(xml);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Saves Settings object as Run-time Settings.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// The resulting file will be read using the IDataStorage interface.
+        /// </remarks>
+        ///
+        /// <param name="filename"> Filename of the file. </param>
+        ///
+        /// <returns>
+        /// true if it succeeds, false if it fails.
+        /// </returns>
+        public Boolean LoadSettings(String filename)
+        {
+            IDataStorage ds = getInterface<IDataStorage>();
+
+            if (ds != null && hasSettings)
+            {
+                String xml = ds.Load(filename);
+
+                Settings = SettingsFromXml(xml);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Saves Settings object as Default (Design-time) Settings.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// In Unity the file will be saved in a Assets\\Resources Folder in the editor environment (As
+        /// resources are read-only at run-time).
+        /// </remarks>
+        ///
+        /// <returns>
+        /// true if it succeeds, false if it fails.
+        /// </returns>
+        public Boolean SaveDefaultSettings()
+        {
+            IDefaultSettings ds = getInterface<IDefaultSettings>();
+
+            if (ds != null && hasSettings && !ds.HasDefaultSettings(Class, Id))
+            {
+                ds.SaveDefaultSettings(Class, Id, SettingsToXml());
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Loads Settings object from Run-time Settings.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// The resulting file will be written using the IDataStorage interface.
+        /// </remarks>
+        ///
+        /// <param name="filename"> Filename of the file. </param>
+        ///
+        /// <returns>
+        /// true if it succeeds, false if it fails.
+        /// </returns>
+        public Boolean SaveSettings(String filename)
+        {
+            IDataStorage ds = getInterface<IDataStorage>();
+
+            if (ds != null && hasSettings)
+            {
+                ds.Save(filename, SettingsToXml());
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Settings from XML.
+        /// </summary>
+        ///
+        /// <param name="xml"> The XML. </param>
+        ///
+        /// <returns>
+        /// The ISettings.
+        /// </returns>
+        public ISettings SettingsFromXml(String xml)
+        {
+            XmlSerializer ser = new XmlSerializer(Settings.GetType());
+
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
+            {
+                //! Use DataContractSerializer or DataContractJsonSerializer?
+                //
+                return (ISettings)ser.Deserialize(ms);
+            }
+        }
+
+        /// <summary>
+        /// Settings to XML.
+        /// </summary>
+        ///
+        /// <returns>
+        /// A String.
+        /// </returns>
+        public String SettingsToXml()
+        {
+            XmlSerializer ser = new XmlSerializer(Settings.GetType());
+
+            using (StringWriterUtf8 textWriter = new StringWriterUtf8())
+            {
+                //! Use DataContractSerializer or DataContractJsonSerializer?
+                //
+                ser.Serialize(textWriter, Settings);
+
+                textWriter.Flush();
+
+                return textWriter.ToString();
+            }
+        }
 
         /// <summary>
         /// Version and dependencies.
@@ -380,210 +485,78 @@ namespace asset_proof_of_concept_demo_CSharp
             return String.Empty;
         }
 
-        /// <summary>
-        /// Loads Settings object from Default (Design-time) Settings.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// In Unity Resources.Load() must be used and the files will be loaded a Assets\\Resources
-        /// Folder.
-        /// </remarks>
-        ///
-        /// <returns>
-        /// true if it succeeds, false if it fails.
-        /// </returns>
-        public Boolean LoadDefaultSettings()
-        {
-            IDefaultSettings ds = getInterface<IDefaultSettings>();
-
-            if (ds != null && hasSettings && ds.HasDefaultSettings(Class, Id))
-            {
-                String xml = ds.LoadDefaultSettings(Class, Id);
-
-                Settings = SettingsFromXml(xml);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Saves Settings object as Default (Design-time) Settings.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// In Unity the file will be saved in a Assets\\Resources Folder in the editor environment (As
-        /// resources are read-only at run-time).
-        /// </remarks>
-        ///
-        /// <returns>
-        /// true if it succeeds, false if it fails.
-        /// </returns>
-        public Boolean SaveDefaultSettings()
-        {
-            IDefaultSettings ds = getInterface<IDefaultSettings>();
-
-            if (ds != null && hasSettings && !ds.HasDefaultSettings(Class, Id))
-            {
-                ds.SaveDefaultSettings(Class, Id, SettingsToXml());
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Saves Settings object as Run-time Settings.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// The resulting file will be read using the IDataStorage interface.
-        /// </remarks>
-        ///
-        /// <param name="filename"> Filename of the file. </param>
-        ///
-        /// <returns>
-        /// true if it succeeds, false if it fails.
-        /// </returns>
-        public Boolean LoadSettings(String filename)
-        {
-            IDataStorage ds = getInterface<IDataStorage>();
-
-            if (ds != null && hasSettings)
-            {
-                String xml = ds.Load(filename);
-
-                Settings = SettingsFromXml(xml);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Loads Settings object from Run-time Settings.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// The resulting file will be written using the IDataStorage interface.
-        /// </remarks>
-        ///
-        /// <param name="filename"> Filename of the file. </param>
-        ///
-        /// <returns>
-        /// true if it succeeds, false if it fails.
-        /// </returns>
-        public Boolean SaveSettings(String filename)
-        {
-            IDataStorage ds = getInterface<IDataStorage>();
-
-            if (ds != null && hasSettings)
-            {
-                ds.Save(filename, SettingsToXml());
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Settings from XML.
-        /// </summary>
-        ///
-        /// <param name="xml"> The XML. </param>
-        ///
-        /// <returns>
-        /// The ISettings.
-        /// </returns>
-        public ISettings SettingsFromXml(String xml)
-        {
-            XmlSerializer ser = new XmlSerializer(Settings.GetType());
-
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
-            {
-                //! Use DataContractSerializer or DataContractJsonSerializer?
-                // 
-                return (ISettings)ser.Deserialize(ms);
-            }
-        }
-
-        /// <summary>
-        /// Settings to XML.
-        /// </summary>
-        ///
-        /// <returns>
-        /// A String.
-        /// </returns>
-        public String SettingsToXml()
-        {
-            XmlSerializer ser = new XmlSerializer(Settings.GetType());
-
-            using (StringWriterUtf8 textWriter = new StringWriterUtf8())
-            {
-                //! Use DataContractSerializer or DataContractJsonSerializer?
-                // 
-                ser.Serialize(textWriter, Settings);
-
-                textWriter.Flush();
-
-                return textWriter.ToString();
-            }
-        }
-
-        ///// <summary>
-        ///// Empty settings.
-        ///// </summary>
-        /////
-        ///// <param name="Class"> The class. </param>
-        /////
-        ///// <returns>
-        ///// A string.
-        ///// </returns>
-        //public static String EmptySettings() {
-        //{
-        //    //! Return Empty Settings.
-        //    // 
-        //    XDocument doc = new XDocument(new XDeclaration("1.0", "UTF-8", null));
-
-        //    XNamespace xsi = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
-        //    XNamespace xsd = XNamespace.Get("http://www.w3.org/2001/XMLSchema");
-
-        //    //XNamespace ns1 = "http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition";
-        //    //xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        //    doc.Add(
-        //        new XElement(XNamespace.None + String.Format("{0}Settings", Class),
-        //            new XAttribute(XNamespace.Xmlns + "xsi", xsi),
-        //            new XAttribute(XNamespace.Xmlns + "xsd", xsd))
-        //        );
-
-        //    using (StringWriterUtf8 sw = new StringWriterUtf8())
-        //    {
-        //        doc.Save(sw);
-
-        //        return sw.ToString();
-        //    }
-        //}
-
         #endregion Methods
 
+        #region Nested Types
+
         /// <summary>
-        /// A string writer utf-8. Fix-up for XDocument Serialization defaulting to utf-16.
+        /// A string writer utf-8.
         /// </summary>
+        ///
+        /// <remarks>
+        /// Fix-up for XDocument Serialization defaulting to utf-16.
+        /// </remarks>
         internal class StringWriterUtf8 : StringWriter
         {
+            #region Properties
+
             //public StringWriterUtf8(StringBuilder sb)
             //    : base(sb)
             //{
             //}
-
             public override Encoding Encoding
             {
                 get { return Encoding.UTF8; }
             }
+
+            #endregion Properties
         }
+
+        #endregion Nested Types
+
+        #region Other
+
+        //public T GetDefaultGeneric<T>()
+        //{
+        //    return default(T);
+        //}
+        //
+        /*
+        /// <summary>
+        /// Empty settings.
+        /// </summary>
+        ///
+        /// <param name="Class"> The class. </param>
+        ///
+        /// <returns>
+        /// A string.
+        /// </returns>
+        public static String EmptySettings() {
+        {
+            //! Return Empty Settings.
+            //
+            XDocument doc = new XDocument(new XDeclaration("1.0", "UTF-8", null));
+
+            XNamespace xsi = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
+            XNamespace xsd = XNamespace.Get("http://www.w3.org/2001/XMLSchema");
+
+            //XNamespace ns1 = "http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition";
+            //xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            doc.Add(
+                new XElement(XNamespace.None + String.Format("{0}Settings", Class),
+                    new XAttribute(XNamespace.Xmlns + "xsi", xsi),
+                    new XAttribute(XNamespace.Xmlns + "xsd", xsd))
+                );
+
+            using (StringWriterUtf8 sw = new StringWriterUtf8())
+            {
+                doc.Save(sw);
+
+                return sw.ToString();
+            }
+        }
+        */
+
+        #endregion Other
     }
 }

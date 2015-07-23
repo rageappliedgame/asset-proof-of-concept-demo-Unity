@@ -12,6 +12,9 @@
     /// </summary>
     public class AssetSettings : BaseSettings
     {
+        /// <summary>
+        /// Initializes a new instance of the asset_proof_of_concept_demo_CSharp.AssetSettings class.
+        /// </summary>
         public AssetSettings()
             : base()
         {
@@ -22,9 +25,13 @@
         /// Gets or sets the test property.
         /// </summary>
 
+        /// <summary>
+        /// Gets or sets the test property.
+        /// </summary>
+        ///
         /// <value>
         /// The test property.
-        ///  </value>
+        /// </value>
         [DefaultValue("Hello Default World")]
         [XmlElement()]
         public String TestProperty
@@ -56,7 +63,7 @@
         /// </value>
         [XmlArray()]
         [XmlArrayItem("ListItem")]
-        [DefaultValue(/*typeof(String[])*/ new String[] { "Hello", "List", "World" })]
+        [DefaultValue(new String[] { "Hello", "List", "World" })]
         public String[] TestList
         {
             get;

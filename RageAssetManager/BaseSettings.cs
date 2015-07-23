@@ -3,11 +3,7 @@
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
-    using System.IO;
     using System.Reflection;
-    using System.Text;
-    using System.Xml.Linq;
-    using System.Xml.Serialization;
 
     /// <summary>
     /// A base settings.
@@ -28,14 +24,6 @@
         #endregion Constructors
 
         #region Methods
-
-        ///// <summary>
-        ///// Loads this object.
-        ///// </summary>
-        //internal void Load()
-        //{
-        //    throw (new NotImplementedException());
-        //}
 
         /// <summary>
         /// Set the value of (Public Instance) properties to the <see cref="DefaultValueAttribute"/>'s

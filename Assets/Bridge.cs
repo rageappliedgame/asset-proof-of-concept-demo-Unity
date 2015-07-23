@@ -21,12 +21,12 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <summary>
         /// The storage dir for IDataStorage use. The folder will be located in the Unity Assets Folder.
         /// </summary>
-        private static String StorageDir = Application.dataPath + "/DataStorage";
+        private static String StorageDir;
 
         /// <summary>
         /// The archive dir for IDataArchive use. The folder will be located in the Unity Assets Folder.
         /// </summary>
-        private static String ArchiveDir = Application.dataPath + "/Archive";
+        private static String ArchiveDir;
 
         /// <summary>
         /// The resource dir for IDefaulSettings use.
@@ -37,13 +37,29 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <remarks>       Reading of files saved in this directory can be done with Unity's
         ///                 Resources.Load() methods, where the name passed is the filename relative to
         ///                 ResourceDir without file extension.</remarks>
-        private static String ResourceDir = Application.dataPath + "/Resources";
+        private static String ResourceDir;
+
+        /// <summary>
+        /// Initializes static members of the asset_proof_of_concept_demo_CSharp.Bridge class.
+        /// </summary>
+        static Bridge()
+        {
+            Debug.Log("Static Bridge Constructor");
+
+            StorageDir = Application.dataPath + "/DataStorage";
+
+            ArchiveDir = Application.dataPath + "/Archive";
+
+            ResourceDir = Application.dataPath + "/Resources";
+        }
 
         /// <summary>
         /// Initializes a new instance of the asset_proof_of_concept_demo_CSharp.Bridge class.
         /// </summary>
         public Bridge()
         {
+            Debug.Log("Bridge Constructor");
+
             this.Prefix = "";
 
             if (!Directory.Exists(StorageDir))
@@ -54,6 +70,11 @@ namespace asset_proof_of_concept_demo_CSharp
             if (!Directory.Exists(ArchiveDir))
             {
                 Directory.CreateDirectory(ArchiveDir);
+            }
+
+            if (!Directory.Exists(ResourceDir))
+            {
+                Directory.CreateDirectory(ResourceDir);
             }
         }
 
@@ -127,9 +148,9 @@ namespace asset_proof_of_concept_demo_CSharp
         public List<String> Files()
         {
             return Directory.GetFiles(StorageDir).ToList().ConvertAll(
-                new Converter<String, String>(p => p.Replace(StorageDir + @"\", ""))).ToList();
-            //return Directory.EnumerateFiles(StorageDir).ToList().ConvertAll(
-            //	new Converter<String, String>(p => p.Replace(StorageDir + @"\", ""))).ToList();
+                new Converter<String, String>(p => p
+                    .Replace(StorageDir, "")
+                    .TrimStart(Path.DirectorySeparatorChar))).ToList();
         }
 
         /// <summary>
@@ -302,7 +323,7 @@ namespace asset_proof_of_concept_demo_CSharp
         {
             if (Application.isEditor)
             {
-                File.WriteAllText(Path.Combine(ResourceDir, DeriveAssetName(Class, Id)), Xml);
+                File.WriteAllText(Path.Combine(ResourceDir, DeriveAssetName(Class, Id) + ".xml"), Xml);
             }
             else
             {

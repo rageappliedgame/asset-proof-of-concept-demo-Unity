@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+
+using asset_proof_of_concept_demo_CSharp;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
-using asset_proof_of_concept_demo_CSharp;
 
 /// <summary>
 /// A new behaviour script.
@@ -15,40 +16,47 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
 {
     #region Fields
 
-    [SerializeField]
-    public String _TestField;
-    [SerializeField]
-    public String _TestProperty;
+    /// <summary>
+    /// The dialogue text, to be linked with a TextField .
+    /// </summary>
+    public Text dialogueText;
 
+    /// <summary>
+    /// The first asset.
+    /// </summary>
     static Asset asset1;
+
+    /// <summary>
+    /// The second asset.
+    /// </summary>
     static Asset asset2;
+
+    /// <summary>
+    /// The third asset.
+    /// </summary>
     static Logger asset3;
+
+    /// <summary>
+    /// The fourth asset.
+    /// </summary>
     static Logger asset4;
+
+    /// <summary>
+    /// The fifth asset.
+    /// </summary>
     static DialogueAsset asset5;
 
     /// <summary>
     /// The first bridge.
     /// </summary>
-    static Bridge bridge1 = new Bridge("global bridge: ");
+    static Bridge bridge1;
 
     /// <summary>
     /// The second bridge.
     /// </summary>
-    static Bridge bridge2 = new Bridge();
+    static Bridge bridge2;
 
     #endregion Fields
-
-    #region Properties
-
-    [Category("RAGE")]
-    [Description("Test")]
-    public String TestProperty
-    {
-        get { return _TestProperty; }
-        set { _TestProperty = value; }
-    }
-
-    #endregion Properties
 
     #region Methods
 
@@ -88,26 +96,43 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
         Debug.Log(String.Format("[demo.html].{0}: [{1}]", topic, ArgsToString(args)));
     }
 
+    /// <summary>
+    /// Executes the click action.
+    /// </summary>
     public void OnClick()
     {
         Debug.Log("OnClick!");
     }
 
+    /// <summary>
+    /// Executes the mouse down action.
+    /// </summary>
     public void OnMouseDown()
     {
         Debug.Log("OnMouseDown!");
     }
 
+    /// <summary>
+    /// Executes the mouse enter action.
+    /// </summary>
     public void OnMouseEnter()
     {
         Debug.Log("OnMouseEnter!");
     }
 
+    /// <summary>
+    /// Executes the mouse leave action.
+    /// </summary>
     public void OnMouseLeave()
     {
         Debug.Log("OnMouseLeave!");
     }
 
+    /// <summary>
+    /// Executes the pointer click action.
+    /// </summary>
+    ///
+    /// <param name="eventData"> Information describing the event. </param>
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("OnPointerClick!");
@@ -129,6 +154,11 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
         Test_08_Settings(this);
     }
 
+    /// <summary>
+    /// Executes the pointer down action.
+    /// </summary>
+    ///
+    /// <param name="eventData"> Information describing the event. </param>
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("OnPointerDown!");
@@ -143,16 +173,23 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
         Debug.Log("OnSubmit!");
     }
 
-    public void TestMethod()
-    {
-        Debug.Log("TestMethod!");
-    }
-
     /// <summary>
     /// Tests 01 setup.
     /// </summary>
     private static void Test_01_Setup()
     {
+        if (bridge1 == null)
+        {
+            bridge1 = new Bridge("global bridge: ");
+            Debug.Log("Bridge1 Created");
+        }
+
+        if (bridge2 == null)
+        {
+            bridge2 = new Bridge();
+            Debug.Log("Bridge2 Created");
+        }
+
         //! Add assets and automatically create the Asset Manager.
         //
         asset1 = new Asset();
@@ -389,8 +426,6 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
         Console.WriteLine("Trying to re-register: {0}", AssetManager.Instance.registerAssetInstance(asset4, asset4.Class));
     }
 
-    public Text dialogueText;
-
     /// <summary>
     /// Tests 07 dialogue asset.
     /// </summary>
@@ -421,18 +456,36 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
     {
         //script.dialogueText.text = asset1.DefaultSettings.Count.ToString();//["NewKey0"].;
 
-        // Default Settings
-        Debug.Log(asset1.DefaultSettings);
+        //! Log Default Settings
+        Debug.Log(asset1.SettingsToXml());
 
-        // App Default Settings
+        //! Log Default Settings
         asset2.Bridge = bridge1;
-        Debug.Log(asset2.DefaultSettings);
+        Debug.Log(asset2.SettingsToXml());
 
-        // No Settings
-        Debug.Log(asset3.DefaultSettings);
+        //! Save App Default Settings if not present (and Settings is not null).
+        asset2.SaveDefaultSettings();
 
-        // Save Settings
-        Debug.Log(asset1.Save());
+        //! Load App Default Settings if present (and Settings is not null).
+        asset2.LoadDefaultSettings();
+        Debug.Log(asset2.SettingsToXml());
+
+        //! Try Saving an Asset with No Settings (null)
+        if (asset3.hasSettings)
+        {
+            asset3.SaveDefaultSettings();
+
+            Debug.Log(asset3.SettingsToXml());
+        }
+
+        //! Save Runtime Settings
+        asset2.SaveSettings("runtime-settings.xml");
+
+        //! Load Runtime Settings.
+        asset1.Bridge = bridge1;
+        asset1.LoadSettings("runtime-settings.xml");
+
+        Debug.Log(asset1.SettingsToXml());
     }
 
     // Use this for initialization

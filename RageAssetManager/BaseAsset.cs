@@ -8,13 +8,8 @@ namespace asset_proof_of_concept_demo_CSharp
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Configuration;
-    using System.Diagnostics;
     using System.IO;
-    using System.Reflection;
     using System.Text;
-    using System.Xml;
     using System.Xml.Linq;
     using System.Xml.Serialization;
     using System.Xml.XPath;
@@ -52,7 +47,6 @@ namespace asset_proof_of_concept_demo_CSharp
     /// 
     /// <seealso cref="http://forum.unity3d.com/threads/how-to-build-and-debug-external-dlls.161685/"/>
     /// </summary>
-    [Serializable]
     public class BaseAsset : IAsset
     {
         #region Fields
@@ -71,30 +65,20 @@ namespace asset_proof_of_concept_demo_CSharp
         /// </summary>
         public BaseAsset()
         {
-            Debug.WriteLine("BaseAsset!");
-
             this.Id = AssetManager.Instance.registerAssetInstance(this, this.Class);
 
             //! NOTE Unlike the JavaScript and Typescript versions (using a setTimeout) registration will not get triggered during publish in the AssetManager constructor.
             //
             testSubscription = pubsubz.subscribe("EventSystem.Init", (topics, data) =>
-                                                 {
-                                                     //! This code fails in TypeScript (coded there as 'this.Id') as this points to the method and not the Asset.
-                                                     Console.WriteLine("[{0}].{1}: {2}", this.Id, topics, data);
-                                                 });
+            {
+                //This code fails in TypeScript (coded there as 'this.Id') as this points to the method and not the Asset.
+                Console.WriteLine("[{0}].{1}: {2}", this.Id, topics, data);
+            });
 
-            // http://www.mindthecube.com/blog/2009/11/reading-text-data-into-a-unity-game
-            // http://forum.unity3d.com/threads/enabling-embedded-resources-with-webgl.326069/
-
-            Assembly me = GetType().Assembly;
-
-            Console.WriteLine("RageAssets: {0}", GetType().Namespace);
-            Console.WriteLine("RageAssets: {0}", me.FullName);
-            Console.WriteLine("RageAssets: {0}", me.CodeBase);
-
-            //foreach (string name in me.GetManifestResourceNames())
+            //! List Embedded Resources.
+            //foreach (String name in Assembly.GetCallingAssembly().GetManifestResourceNames())
             //{
-            //    Console.WriteLine("Resources: {0}", name);
+            //    Console.WriteLine("{0}", name);
             //}
         }
 
@@ -109,7 +93,6 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The bridge.
         /// </value>
-        [XmlIgnoreAttribute]
         public object Bridge
         {
             get;
@@ -123,7 +106,6 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The class.
         /// </value>
-        //[XmlIgnoreAttribute]
         public String Class
         {
             get
@@ -139,7 +121,6 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The dependencies.
         /// </value>
-        [XmlIgnoreAttribute]
         public Dictionary<String, String> Dependencies
         {
             get
@@ -180,7 +161,6 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The identifier.
         /// </value>
-        [XmlIgnoreAttribute]
         public String Id
         {
             get;
@@ -194,7 +174,6 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The maturity.
         /// </value>
-        [XmlIgnoreAttribute]
         public String Maturity
         {
             get
@@ -223,7 +202,6 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The version.
         /// </value>
-        [XmlIgnoreAttribute]
         public String Version
         {
             get
@@ -241,11 +219,6 @@ namespace asset_proof_of_concept_demo_CSharp
         #endregion Properties
 
         #region Methods
-
-        public object GetDefault(Type t)
-        {
-            return this.GetType().GetMethod("GetDefaultGeneric").MakeGenericMethod(t).Invoke(this, null);
-        }
 
         /// <summary>
         /// Loads Settings object from Default (Design-time) Settings.

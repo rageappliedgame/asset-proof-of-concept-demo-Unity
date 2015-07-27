@@ -10,23 +10,48 @@ namespace asset_proof_of_concept_demo_CSharp
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>
+    /// A pubsubz.
+    /// </summary>
     public static class pubsubz
     {
         #region Fields
 
+        /// <summary>
+        /// The sub UID.
+        /// </summary>
         private static Int32 subUid = 0;
+
+        /// <summary>
+        /// The topics.
+        /// </summary>
         private static Dictionary<String, Dictionary<String, TopicEvent>> topics = new Dictionary<String, Dictionary<String, TopicEvent>>();
 
         #endregion Fields
 
         #region Delegates
 
+        /// <summary>
+        /// Topic event.
+        /// </summary>
+        ///
+        /// <param name="topic"> The topic. </param>
+        /// <param name="args">  A variable-length parameters list containing arguments. </param>
         public delegate void TopicEvent(String topic, params object[] args);
 
         #endregion Delegates
 
         #region Methods
 
+        /// <summary>
+        /// Defines.
+        /// </summary>
+        ///
+        /// <param name="topic"> The topic. </param>
+        ///
+        /// <returns>
+        /// true if it succeeds, false if it fails.
+        /// </returns>
         public static Boolean define(String topic)
         {
             if (!topics.Keys.Contains(topic))
@@ -39,6 +64,16 @@ namespace asset_proof_of_concept_demo_CSharp
             return false;
         }
 
+        /// <summary>
+        /// Publishes.
+        /// </summary>
+        ///
+        /// <param name="topic"> The topic. </param>
+        /// <param name="args">  A variable-length parameters list containing arguments. </param>
+        ///
+        /// <returns>
+        /// true if it succeeds, false if it fails.
+        /// </returns>
         public static Boolean publish(String topic, params object[] args)
         {
             if (!topics.Keys.Contains(topic))
@@ -54,6 +89,16 @@ namespace asset_proof_of_concept_demo_CSharp
             return true;
         }
 
+        /// <summary>
+        /// Subscribes.
+        /// </summary>
+        ///
+        /// <param name="topic"> The topic. </param>
+        /// <param name="func">  The function. </param>
+        ///
+        /// <returns>
+        /// A String.
+        /// </returns>
         public static String subscribe(String topic, TopicEvent func)
         {
             if (!topics.Keys.Contains(topic))
@@ -68,6 +113,15 @@ namespace asset_proof_of_concept_demo_CSharp
             return token;
         }
 
+        /// <summary>
+        /// Unsubscribes.
+        /// </summary>
+        ///
+        /// <param name="token"> The token. </param>
+        ///
+        /// <returns>
+        /// true if it succeeds, false if it fails.
+        /// </returns>
         public static Boolean unsubscribe(String token)
         {
             foreach (String topic in topics.Keys)

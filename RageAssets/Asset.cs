@@ -9,16 +9,10 @@ namespace asset_proof_of_concept_demo_CSharp
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Xml.Linq;
-    using System.Xml.Serialization;
 
     /// <summary>
     /// An asset.
     /// </summary>
-    //[XmlRoot(Namespace = "www.rage.com",
-    //     ElementName = "Asset",
-    //     DataType = "string",
-    //     IsNullable = true)]
     public class Asset : BaseAsset
     {
         #region Fields

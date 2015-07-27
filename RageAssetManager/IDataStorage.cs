@@ -1,9 +1,8 @@
-﻿// <copyright file="idatastorage.cs" company="MyCompany.com">
-// Copyright (c) 2015 MyCompany.com. All rights reserved.
+﻿// <copyright file="IDataStorage.cs" company="RAGE"> Copyright (c) 2015 RAGE. All rights reserved.
 // </copyright>
 // <author>Veg</author>
-// <date>23-7-2015</date>
-// <summary>Implements the idatastorage class</summary>
+// <date>13-4-2015</date>
+// <summary>Defines the IDataStorage Interface</summary>
 namespace asset_proof_of_concept_demo_CSharp
 {
     using System;

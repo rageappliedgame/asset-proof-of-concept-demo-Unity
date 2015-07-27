@@ -12,6 +12,9 @@ namespace asset_proof_of_concept_demo_CSharp
     using System.Text;
     using System.Text.RegularExpressions;
 
+    /// <summary>
+    /// Manager for assets.
+    /// </summary>
     public class AssetManager
     {
         #region Fields
@@ -197,6 +200,7 @@ namespace asset_proof_of_concept_demo_CSharp
                     String[] vrange = dependency.Value.Split('-');
 
                     Version low = null;
+
                     Version hi = null;
 
                     switch (vrange.Length)
@@ -216,6 +220,7 @@ namespace asset_proof_of_concept_demo_CSharp
                                 hi = new Version(vrange[1]);
                             }
                             break;
+
                         default:
                             break;
                     }
@@ -244,7 +249,7 @@ namespace asset_proof_of_concept_demo_CSharp
 
                     if (cnt != 0)
                     {
-                        Console.Write("".PadRight(40));
+                        Console.Write("".PadRight(col1w));
                     }
 
                     cnt++;
@@ -252,7 +257,7 @@ namespace asset_proof_of_concept_demo_CSharp
 
                 if (cnt == 0)
                 {
-                    Console.WriteLine(String.Format("{0}", "No dependencies"));
+                    Console.WriteLine(String.Format("|{0}", "No dependencies"));
                 }
             }
 

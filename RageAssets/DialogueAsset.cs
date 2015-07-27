@@ -185,6 +185,18 @@ namespace asset_proof_of_concept_demo_CSharp
         /// Loads a script.
         /// </summary>
         ///
+        /// <param name="actor"> The actor. </param>
+        /// <param name="ns">    The namespace. </param>
+        /// <param name="res">   The resource. </param>
+        public void LoadScript(String actor, String ns, String res)
+        {
+            LoadScript(actor, GetEmbeddedResource(ns, res));
+        }
+
+        /// <summary>
+        /// Loads a script.
+        /// </summary>
+        ///
         /// <param name="actor">  The actor. </param>
         /// <param name="script"> The script. </param>
         public void LoadScript(String actor, String script)
@@ -233,19 +245,6 @@ namespace asset_proof_of_concept_demo_CSharp
 
                 Dialogues.Add(dialogue);
             }
-        }
-
-        /// <summary>
-        /// Loads a script.
-        /// </summary>
-        ///
-        /// <param name="actor"> The actor. </param>
-        /// <param name="ns">    The namespace. </param>
-        /// <param name="res">   The resource. </param>        
-        public void LoadScript(String actor, String ns, String res)
-        {
-#warning this should changed to using the bridge (as now the script has to be compiled into the assembly.
-            LoadScript(actor, GetEmbeddedResource(ns, res));
         }
 
         /// <summary>

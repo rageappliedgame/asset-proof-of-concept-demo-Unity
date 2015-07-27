@@ -49,11 +49,6 @@
 
                     Debug.Print("Error Updating Default Value of {0}", pi.Name);
                 }
-                //else
-                //{
-                // Debug.Print("Cannot Update Default Value of Read-Only Property {0}", pi.Name);
-                //}
-
             }
         }
 

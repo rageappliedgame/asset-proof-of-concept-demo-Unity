@@ -7,7 +7,7 @@ namespace asset_proof_of_concept_demo_CSharp
 {
     using System;
 
-	public interface IDataArchive
+    public interface IDataArchive
     {
         /// <summary>
         /// Archives the given file.

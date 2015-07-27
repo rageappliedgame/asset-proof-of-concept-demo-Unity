@@ -14,7 +14,7 @@ namespace asset_proof_of_concept_demo_CSharp
     /// <summary>
     /// A dialogue asset.
     /// </summary>
-	public class DialogueAsset : BaseAsset
+    public class DialogueAsset : BaseAsset
     {
         #region Fields
 
@@ -76,10 +76,10 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <returns>
         /// A Dialogue.
         /// </returns>
-		public Dialogue interact(String actor, String player)
-		{
-			return interact(actor, player, null);
-		}
+        public Dialogue interact(String actor, String player)
+        {
+            return interact(actor, player, null);
+        }
 
         /// <summary>
         /// Interacts.
@@ -185,15 +185,11 @@ namespace asset_proof_of_concept_demo_CSharp
         /// Loads a script.
         /// </summary>
         ///
-        /// <param name="actor"> The actor. </param>
-        /// <param name="ns">    URL of the document. </param>
-        /// <param name="res">   The resource. </param>        
-        public void LoadScript(String actor, String ns, String res)
+        /// <param name="actor">  The actor. </param>
+        /// <param name="script"> The script. </param>
+        public void LoadScript(String actor, String script)
         {
-
-#warning this should changed to using the bridge (as now the script has to be compiled into the assembly.
-
-			String[] lines = GetEmbeddedResource(ns, res).Split(new Char[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
+            String[] lines = script.Split(new Char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
             //! Missing is the line 'banana: I hate bananas'.
 
@@ -237,6 +233,19 @@ namespace asset_proof_of_concept_demo_CSharp
 
                 Dialogues.Add(dialogue);
             }
+        }
+
+        /// <summary>
+        /// Loads a script.
+        /// </summary>
+        ///
+        /// <param name="actor"> The actor. </param>
+        /// <param name="ns">    The namespace. </param>
+        /// <param name="res">   The resource. </param>        
+        public void LoadScript(String actor, String ns, String res)
+        {
+#warning this should changed to using the bridge (as now the script has to be compiled into the assembly.
+            LoadScript(actor, GetEmbeddedResource(ns, res));
         }
 
         /// <summary>

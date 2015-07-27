@@ -59,7 +59,13 @@
     <Compile Include="pubSubz.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\BaseAsset.VersionAndDependencies.xml" />
     <Content Include="Snippets.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VersionAndDependencies.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

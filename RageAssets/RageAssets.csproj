@@ -57,7 +57,6 @@
   <ItemGroup>
     <EmbeddedResource Include="script.txt" />
     <EmbeddedResource Include="Resources\Asset.VersionAndDependencies.xml" />
-    <EmbeddedResource Include="Resources\BaseAsset.VersionAndDependencies.xml" />
     <EmbeddedResource Include="Resources\DialogueAsset.VersionAndDependencies.xml" />
     <EmbeddedResource Include="Resources\Logger.VersionAndDependencies.xml" />
   </ItemGroup>

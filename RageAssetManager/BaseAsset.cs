@@ -452,6 +452,15 @@ namespace asset_proof_of_concept_demo_CSharp
             }
         }
 
+        /// <summary>
+        /// Gets the interface.
+        /// </summary>
+        ///
+        /// <typeparam name="T"> Generic type parameter. </typeparam>
+        ///
+        /// <returns>
+        /// The interface.
+        /// </returns>
         protected T getInterface<T>()
         {
             if (Bridge != null && Bridge is T)
@@ -513,50 +522,5 @@ namespace asset_proof_of_concept_demo_CSharp
         }
 
         #endregion Nested Types
-
-        #region Other
-
-        //public T GetDefaultGeneric<T>()
-        //{
-        //    return default(T);
-        //}
-        //
-        /*
-        /// <summary>
-        /// Empty settings.
-        /// </summary>
-        ///
-        /// <param name="Class"> The class. </param>
-        ///
-        /// <returns>
-        /// A string.
-        /// </returns>
-        public static String EmptySettings() {
-        {
-            //! Return Empty Settings.
-            //
-            XDocument doc = new XDocument(new XDeclaration("1.0", "UTF-8", null));
-
-            XNamespace xsi = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
-            XNamespace xsd = XNamespace.Get("http://www.w3.org/2001/XMLSchema");
-
-            //XNamespace ns1 = "http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition";
-            //xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            doc.Add(
-                new XElement(XNamespace.None + String.Format("{0}Settings", Class),
-                    new XAttribute(XNamespace.Xmlns + "xsi", xsi),
-                    new XAttribute(XNamespace.Xmlns + "xsd", xsd))
-                );
-
-            using (StringWriterUtf8 sw = new StringWriterUtf8())
-            {
-                doc.Save(sw);
-
-                return sw.ToString();
-            }
-        }
-        */
-
-        #endregion Other
     }
 }

@@ -433,7 +433,6 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
     {
         //! DialogAsset.
         //
-
         asset5.LoadScript("me", typeof(DialogueAsset).Namespace, "script.txt");
 
         // Interacting using ask/tell

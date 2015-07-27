@@ -181,7 +181,7 @@ namespace asset_proof_of_concept_demo_CSharp
 
             foreach (KeyValuePair<String, IAsset> asset in assets)
             {
-                Console.Write(String.Format("{0} v{1}", asset.Value.Class, asset.Value.Version).PadRight(col1w));
+                Console.Write(String.Format("{0} v{1}", asset.Value.Class, asset.Value.Version).PadRight(col1w - 1));
 
                 // Console.WriteLine("[{0}]\r\n{1}=v{2}\t;{3}", asset.Key, asset.Value.Class, asset.Value.Version, asset.Value.Maturity);
                 Int32 cnt = 0;
@@ -240,7 +240,7 @@ namespace asset_proof_of_concept_demo_CSharp
                             }
                         }
 
-                        Console.WriteLine(String.Format("{0} v{1} [{2}]", dependency.Key, dependency.Value, found ? "resolved" : "missing"));
+                        Console.WriteLine(String.Format("|{0} v{1} [{2}]", dependency.Key, dependency.Value, found ? "resolved" : "missing"));
                     }
                     else
                     {
@@ -249,7 +249,7 @@ namespace asset_proof_of_concept_demo_CSharp
 
                     if (cnt != 0)
                     {
-                        Console.Write("".PadRight(col1w));
+                        Console.Write("".PadRight(col1w - 1));
                     }
 
                     cnt++;

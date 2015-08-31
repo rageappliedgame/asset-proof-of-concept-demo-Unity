@@ -27,9 +27,18 @@ sysinfo.txt
 # Demo code output
 */Archive/*
 */DataStorage/*
-*.dll
+*/[Oo]bj/*
+*/Assets/Plugins/*
 *.asset
 *.mdb
 *.pdb
 *.txt
 *.pdb
+Assets/UnityEngine.dll
+Assets/Plugins/Emgu.CV.dll
+Assets/Plugins/Emgu.CV.ML.dll
+Assets/Plugins/Emgu.CV.UI.dll
+Assets/Plugins/Emgu.Util.dll
+Assets/Plugins/ZedGraph.dll
+Assets/Plugins/zlib.net.dll
+

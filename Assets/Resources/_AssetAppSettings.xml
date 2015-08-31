@@ -1,0 +1,8 @@
+<AssetSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TestProperty>Hello App Settings World</TestProperty>
+  <TestList>
+    <ListItem>Hello</ListItem>
+    <ListItem>List</ListItem>
+    <ListItem>World</ListItem>
+  </TestList>
+</AssetSettings>

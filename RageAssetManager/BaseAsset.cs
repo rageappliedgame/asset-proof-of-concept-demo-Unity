@@ -1,4 +1,4 @@
-﻿// <copyright file="BaseAsset.cs" company="RAGE">
+// <copyright file="BaseAsset.cs" company="RAGE">
 // Copyright (c) 2015 RAGE All rights reserved.
 // </copyright>
 // <author>Veg</author>
@@ -249,7 +249,7 @@ namespace asset_proof_of_concept_demo_CSharp
         }
 
         /// <summary>
-        /// Saves Settings object as Run-time Settings.
+        /// Loads Settings object as Run-time Settings.
         /// </summary>
         ///
         /// <remarks>

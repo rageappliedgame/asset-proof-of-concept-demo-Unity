@@ -1,4 +1,4 @@
-﻿// <copyright file="AssetManager.cs" company="RAGE">
+// <copyright file="AssetManager.cs" company="RAGE">
 // Copyright (c) 2015 RAGE. All rights reserved.
 // </copyright>
 // <author>Veg</author>
@@ -171,99 +171,118 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <summary>
         /// Reports version and dependencies.
         /// </summary>
-        public void reportVersionAndDependencies()
+        ///
+        /// <value>
+        /// The version and dependencies report.
+        /// </value>
+        public String VersionAndDependenciesReport
         {
-            const Int32 col1w = 40;
-            const Int32 col2w = 32;
-
-            Console.WriteLine(String.Format("{0}{1}", "Asset".PadRight(col1w), "Depends on"));
-            Console.WriteLine(String.Format("{0}+{1}", "".PadRight(col1w - 1, '-'), "".PadRight(col2w, '-')));
-
-            foreach (KeyValuePair<String, IAsset> asset in assets)
+            get
             {
-                Console.Write(String.Format("{0} v{1}", asset.Value.Class, asset.Value.Version).PadRight(col1w - 1));
+                const Int32 col1w = 40;
+                const Int32 col2w = 32;
 
-                // Console.WriteLine("[{0}]\r\n{1}=v{2}\t;{3}", asset.Key, asset.Value.Class, asset.Value.Version, asset.Value.Maturity);
-                Int32 cnt = 0;
-                foreach (KeyValuePair<String, String> dependency in asset.Value.Dependencies)
+                StringBuilder report = new StringBuilder();
+
+                report.AppendFormat("{0}{1}", "Asset".PadRight(col1w), "Depends on").AppendLine();
+                report.AppendFormat("{0}+{1}", "".PadRight(col1w - 1, '-'), "".PadRight(col2w, '-')).AppendLine();
+
+                foreach (KeyValuePair<String, IAsset> asset in assets)
                 {
-                    //! Better version matches (see Microsoft).
-                    // 
-                    //! https://msdn.microsoft.com/en-us/library/system.version(v=vs.110).aspx
-                    //
-                    //! dependency.value has min-max format (inclusive) like:
-                    // 
-                    //? v1.2.3-*        (v1.2.3 or higher)
-                    //? v0.0-*          (all versions)
-                    //? v1.2.3-v2.2     (v1.2.3 or higher less than or equal to v2.1)
-                    //
-                    String[] vrange = dependency.Value.Split('-');
+                    report.AppendLine(String.Format("{0} v{1}", asset.Value.Class, asset.Value.Version).PadRight(col1w - 1));
 
-                    Version low = null;
-
-                    Version hi = null;
-
-                    switch (vrange.Length)
+                    // Console.WriteLine("[{0}]\r\n{1}=v{2}\t;{3}", asset.Key, asset.Value.Class, asset.Value.Version, asset.Value.Maturity);
+                    Int32 cnt = 0;
+                    foreach (KeyValuePair<String, String> dependency in asset.Value.Dependencies)
                     {
-                        case 1:
-                            low = new Version(vrange[0]);
-                            hi = low;
-                            break;
-                        case 2:
-                            low = new Version(vrange[0]);
-                            if (vrange[1].Equals("*"))
-                            {
-                                hi = new Version(99, 99);
-                            }
-                            else
-                            {
-                                hi = new Version(vrange[1]);
-                            }
-                            break;
+                        //! Better version matches (see Microsoft).
+                        // 
+                        //! https://msdn.microsoft.com/en-us/library/system.version(v=vs.110).aspx
+                        //
+                        //! dependency.value has min-max format (inclusive) like:
+                        // 
+                        //? v1.2.3-*        (v1.2.3 or higher)
+                        //? v0.0-*          (all versions)
+                        //? v1.2.3-v2.2     (v1.2.3 or higher less than or equal to v2.1)
+                        //
+                        String[] vrange = dependency.Value.Split('-');
 
-                        default:
-                            break;
-                    }
+                        Version low = null;
 
-                    Boolean found = false;
+                        Version hi = null;
 
-                    if (low != null)
-                    {
-                        foreach (IAsset dep in findAssetsByClass(dependency.Key))
+                        switch (vrange.Length)
                         {
-                            // Console.WriteLine("Dependency {0}={1}",dep.Class, dep.Version);
-                            Version vdep = new Version(dep.Version);
-                            if (low <= vdep && vdep <= hi)
-                            {
-                                found = true;
+                            case 1:
+                                low = new Version(vrange[0]);
+                                hi = low;
                                 break;
-                            }
+                            case 2:
+                                low = new Version(vrange[0]);
+                                if (vrange[1].Equals("*"))
+                                {
+                                    hi = new Version(99, 99);
+                                }
+                                else
+                                {
+                                    hi = new Version(vrange[1]);
+                                }
+                                break;
+
+                            default:
+                                break;
                         }
 
-                        Console.WriteLine(String.Format("|{0} v{1} [{2}]", dependency.Key, dependency.Value, found ? "resolved" : "missing"));
-                    }
-                    else
-                    {
-                        Console.WriteLine("error");
+                        Boolean found = false;
+
+                        if (low != null)
+                        {
+                            foreach (IAsset dep in findAssetsByClass(dependency.Key))
+                            {
+                                // Console.WriteLine("Dependency {0}={1}",dep.Class, dep.Version);
+                                Version vdep = new Version(dep.Version);
+                                if (low <= vdep && vdep <= hi)
+                                {
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            report.AppendFormat("|{0} v{1} [{2}]", dependency.Key, dependency.Value, found ? "resolved" : "missing").AppendLine();
+                        }
+                        else
+                        {
+                            report.AppendLine("error");
+                        }
+
+                        if (cnt != 0)
+                        {
+                            report.Append("".PadRight(col1w - 1));
+                        }
+
+                        cnt++;
                     }
 
-                    if (cnt != 0)
+                    if (cnt == 0)
                     {
-                        Console.Write("".PadRight(col1w - 1));
+                        report.AppendFormat("|{0}", "No dependencies").AppendLine();
                     }
-
-                    cnt++;
                 }
 
-                if (cnt == 0)
-                {
-                    Console.WriteLine(String.Format("|{0}", "No dependencies"));
-                }
+                report.AppendFormat("{0}+{1}", "".PadRight(col1w - 1, '-'), "".PadRight(col2w, '-')).AppendLine();
+
+                return report.ToString();
             }
-
-            Console.WriteLine(String.Format("{0}+{1}", "".PadRight(col1w - 1, '-'), "".PadRight(col2w, '-')));
         }
 
+        /// <summary>
+        /// Reports version and dependencies.
+        /// </summary>
+        public void reportVersionAndDependencies()
+        {
+            Console.WriteLine(VersionAndDependenciesReport);
+        }
+        
         /// <summary>
         /// Initialises the event system.
         /// </summary>

@@ -4,6 +4,7 @@
     using System.ComponentModel;
     using System.Drawing;
     using System.Xml.Serialization;
+    using AssetPackage;
 
     /// <summary>
     /// An asset settings.

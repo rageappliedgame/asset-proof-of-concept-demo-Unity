@@ -1,10 +1,10 @@
-// <copyright file="BaseAsset.cs" company="RAGE">
+﻿// <copyright file="BaseAsset.cs" company="RAGE">
 // Copyright (c) 2015 RAGE All rights reserved.
 // </copyright>
 // <author>Veg</author>
 // <date>13-4-2015</date>
 // <summary>Implements the base asset class</summary>
-namespace asset_proof_of_concept_demo_CSharp
+namespace AssetPackage
 {
     using System;
     using System.Collections.Generic;
@@ -14,38 +14,10 @@ namespace asset_proof_of_concept_demo_CSharp
     using System.Xml.Serialization;
     using System.Xml.XPath;
 
+    using AssetManagerPackage;
+
     /// <summary>
     /// A base asset.
-    /// 
-    /// For debugging the RageAssets, one needs to do several things:
-    /// <list type="number">
-    /// <item><description>The generated assembly should have full Debug Symbols enabled and the   
-    ///    Debug Constant to be defined (i.e. a Debug Build).</description></item>
-    /// <item><description>The csproj file needs to  be adjusted to include a pdb to mdb (Debug Symbol) conversion.</description></item>
-    /// </list><para />
-    /// Add the following lines (for Unity 5.x) to the PropertyGroup containing the Debug configuration:
-    /// <br /><code>
-    ///     &lt;!-- Look up Unity install folder, and set the ReferencePath for locating managed assembly references. --&gt;
-    ///     &lt;UnityInstallFolder&gt;$(registry:HKEY_CURRENT_USER\Software\Unity Technologies\Installer\Unity@Location x64)&lt;/UnityInstallFolder&gt;
-    ///     &lt;ReferencePath&gt;$(UnityInstallFolder)\Editor\Data\&lt;/ReferencePath&gt;
-    ///     &lt;MonoFolder&gt;$(UnityInstallFolder)\Editor\Data\MonoBleedingEdge&lt;/MonoFolder&gt;
-    ///     &lt;MonoMdbGenerator&gt;$(MonoFolder)\lib\mono\4.5\pdb2mdb.exe&lt;/MonoMdbGenerator&gt;
-    ///     &lt;MonoCLI&gt;$(MonoFolder)\bin\cli.bat&lt;/MonoCLI&gt;
-    /// </code>
-    /// <para />
-    /// Add the following lines (for Unity 5.x) after the last PropertyGroup:
-    /// <br /><code>
-    ///     &lt;Target Name="AfterBuild"&gt;
-    ///        &lt;CallTarget Targets="GenerateMonoSymbols" Condition=" Exists('$(OutputPath)\$(AssemblyName).pdb') " /&gt;
-    ///      &lt;/Target&gt;
-    ///      &lt;Target Name="GenerateMonoSymbols"&gt;
-    ///        &lt;Message Text="Unity install folder: $(UnityInstallFolder)" Importance="high" /&gt;
-    ///        &lt;Message Text="$(ProjectName) -&gt; $(TargetPath).mdb" Importance="High" /&gt;
-    ///        &lt;Exec Command="&quot;$(MonoCLI)&quot; &quot;$(MonoMdbGenerator)&quot; $(AssemblyName).dll" WorkingDirectory="$(MSBuildProjectDirectory)\$(OutputPath)" /&gt;
-    ///      &lt;/Target&gt;
-    /// </code>
-    /// 
-    /// <seealso cref="http://forum.unity3d.com/threads/how-to-build-and-debug-external-dlls.161685/"/>
     /// </summary>
     public class BaseAsset : IAsset
     {
@@ -54,6 +26,7 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <summary>
         /// The test subscription.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         private String testSubscription;
 
         #endregion Fields
@@ -69,17 +42,28 @@ namespace asset_proof_of_concept_demo_CSharp
 
             //! NOTE Unlike the JavaScript and Typescript versions (using a setTimeout) registration will not get triggered during publish in the AssetManager constructor.
             //
-            testSubscription = pubsubz.subscribe("EventSystem.Init", (topics, data) =>
-            {
-                //This code fails in TypeScript (coded there as 'this.Id') as this points to the method and not the Asset.
-                Console.WriteLine("[{0}].{1}: {2}", this.Id, topics, data);
-            });
+            //testSubscription = pubsubz.subscribe("EventSystem.Init", (topics, data) =>
+            //{
+            //This code fails in TypeScript (coded there as 'this.Id') as this points to the method and not the Asset.
+            //Console.WriteLine("[{0}].{1}: {2}", this.Id, topics, data);
+            //});
 
             //! List Embedded Resources.
             //foreach (String name in Assembly.GetCallingAssembly().GetManifestResourceNames())
             //{
             //    Console.WriteLine("{0}", name);
             //}
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the AssetPackage.BaseAsset class.
+        /// </summary>
+        ///
+        /// <param name="bridge"> The bridge. </param>
+        public BaseAsset(IBridge bridge)
+            : this()
+        {
+            this.Bridge = bridge;
         }
 
         #endregion Constructors
@@ -93,7 +77,7 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The bridge.
         /// </value>
-        public object Bridge
+        public IBridge Bridge
         {
             get;
             set;
@@ -265,7 +249,7 @@ namespace asset_proof_of_concept_demo_CSharp
         {
             IDataStorage ds = getInterface<IDataStorage>();
 
-            if (ds != null && hasSettings)
+            if (ds != null && hasSettings && ds.Exists(filename))
             {
                 String xml = ds.Load(filename);
 
@@ -289,11 +273,11 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <returns>
         /// true if it succeeds, false if it fails.
         /// </returns>
-        public Boolean SaveDefaultSettings()
+        public Boolean SaveDefaultSettings(bool force)
         {
             IDefaultSettings ds = getInterface<IDefaultSettings>();
 
-            if (ds != null && hasSettings && !ds.HasDefaultSettings(Class, Id))
+            if (ds != null && hasSettings && (force || !ds.HasDefaultSettings(Class, Id)))
             {
                 ds.SaveDefaultSettings(Class, Id, SettingsToXml());
 

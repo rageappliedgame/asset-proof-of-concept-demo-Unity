@@ -3,11 +3,14 @@
 // <author>Veg</author>
 // <date>13-4-2015</date>
 // <summary>Defines the IDataStorage Interface</summary>
-namespace asset_proof_of_concept_demo_CSharp
+namespace AssetPackage
 {
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Interface for data storage.
+    /// </summary>
     public interface IDataStorage
     {
         #region Methods

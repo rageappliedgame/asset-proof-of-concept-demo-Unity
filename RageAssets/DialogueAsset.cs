@@ -10,6 +10,8 @@ namespace asset_proof_of_concept_demo_CSharp
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using AssetManagerPackage;
+    using AssetPackage;
 
     /// <summary>
     /// A dialogue asset.

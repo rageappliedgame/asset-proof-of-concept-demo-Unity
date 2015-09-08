@@ -1,11 +1,9 @@
 ﻿namespace AssetPackage
 {
-    using System;
-
     /// <summary>
-    /// Interface for settings.
+    /// Interface for bridge.
     /// </summary>
-    public interface ISettings
+    public interface IBridge
     {
         #region Other
 

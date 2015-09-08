@@ -12,11 +12,12 @@ namespace asset_proof_of_concept_demo_CSharp
     using System.IO;
     using System.Linq;
     using System.Xml.Linq;
+    using AssetPackage;
 
     /// <summary>
     /// A bridge.
     /// </summary>
-    class Bridge : ILogger, IDataStorage, IDataArchive, IDefaultSettings
+    class Bridge : IBridge, ILogger, IDataStorage, IDataArchive, IDefaultSettings
     {
         /// <summary>
         /// The storage dir for IDataStorage use. The folder will be located in the Unity Assets Folder.

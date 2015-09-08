@@ -4,13 +4,14 @@
 // <author>Veg</author>
 // <date>10-4-2015</date>
 // <summary>Implements the asset manager class</summary>
-namespace asset_proof_of_concept_demo_CSharp
+namespace AssetManagerPackage
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
+    using AssetPackage;
 
     /// <summary>
     /// Manager for assets.
@@ -80,7 +81,7 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <value>
         /// The bridge.
         /// </value>
-        public object Bridge
+        public IBridge Bridge
         {
             get;
             set;
@@ -189,7 +190,7 @@ namespace asset_proof_of_concept_demo_CSharp
 
                 foreach (KeyValuePair<String, IAsset> asset in assets)
                 {
-                    report.AppendLine(String.Format("{0} v{1}", asset.Value.Class, asset.Value.Version).PadRight(col1w - 1));
+                    report.Append(String.Format("{0} v{1}", asset.Value.Class, asset.Value.Version).PadRight(col1w - 1));
 
                     // Console.WriteLine("[{0}]\r\n{1}=v{2}\t;{3}", asset.Key, asset.Value.Class, asset.Value.Version, asset.Value.Maturity);
                     Int32 cnt = 0;
@@ -275,14 +276,6 @@ namespace asset_proof_of_concept_demo_CSharp
             }
         }
 
-        /// <summary>
-        /// Reports version and dependencies.
-        /// </summary>
-        public void reportVersionAndDependencies()
-        {
-            Console.WriteLine(VersionAndDependenciesReport);
-        }
-        
         /// <summary>
         /// Initialises the event system.
         /// </summary>

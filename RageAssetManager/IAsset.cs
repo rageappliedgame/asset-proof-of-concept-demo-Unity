@@ -4,7 +4,7 @@
 // <author>Veg</author>
 // <date>10-4-2015</date>
 // <summary>Implements the iasset class</summary>
-namespace asset_proof_of_concept_demo_CSharp
+namespace AssetPackage
 {
     using System;
     using System.Collections.Generic;
@@ -87,6 +87,19 @@ namespace asset_proof_of_concept_demo_CSharp
         String Version
         {
             get;
+        }
+
+        /// <summary>
+        /// Gets or sets the bridge.
+        /// </summary>
+        ///
+        /// <value>
+        /// The bridge.
+        /// </value>
+        IBridge Bridge
+        {
+            get;
+            set;
         }
 
         #endregion Properties

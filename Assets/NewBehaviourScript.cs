@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-
 using asset_proof_of_concept_demo_CSharp;
-
+using AssetManagerPackage;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -259,18 +258,19 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
         //{
         //    Console.WriteLine("Depends {0}", dependency.Value);
         //}
-        Console.WriteLine(String.Empty);
-        Console.WriteLine("Asset {0} v{1}", asset1.Class, asset1.Version);
+        Debug.Log(String.Empty);
+        Debug.Log(String.Format("Asset {0} v{1}", asset1.Class, asset1.Version));
         foreach (KeyValuePair<String, String> dependency in asset1.Dependencies)
         {
-            Console.WriteLine("Depends on {0} v{1}", dependency.Key, dependency.Value);
+            Debug.Log(String.Format("Depends on {0} v{1}", dependency.Key, dependency.Value));
         }
-        Console.WriteLine(String.Empty);
+        Debug.Log(String.Empty);
 
-        AssetManager.Instance.reportVersionAndDependencies();
-        Console.WriteLine("Version: v{0}", asset1.Version);
+        Debug.Log(AssetManager.Instance.VersionAndDependenciesReport);
 
-        Console.WriteLine(String.Empty);
+        Debug.Log(String.Format("Version: v{0}", asset1.Version));
+
+        Debug.Log(String.Empty);
     }
 
     /// <summary>
@@ -463,7 +463,7 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
         Debug.Log(asset2.SettingsToXml());
 
         //! Save App Default Settings if not present (and Settings is not null).
-        asset2.SaveDefaultSettings();
+        asset2.SaveDefaultSettings(false);
 
         //! Load App Default Settings if present (and Settings is not null).
         asset2.LoadDefaultSettings();
@@ -472,7 +472,7 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
         //! Try Saving an Asset with No Settings (null)
         if (asset3.hasSettings)
         {
-            asset3.SaveDefaultSettings();
+            asset3.SaveDefaultSettings(false);
 
             Debug.Log(asset3.SettingsToXml());
         }

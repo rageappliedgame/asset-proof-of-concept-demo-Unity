@@ -6,6 +6,7 @@
 namespace asset_proof_of_concept_demo_CSharp
 {
     using System;
+    using AssetPackage;
 
     /// <summary>
     /// A logger.

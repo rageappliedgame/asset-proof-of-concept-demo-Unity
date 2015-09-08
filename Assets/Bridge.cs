@@ -1,4 +1,4 @@
-﻿// <copyright file="Bridge.cs" company="RAGE"> Copyright (c) 2015 RAGE. All rights reserved.
+// <copyright file="Bridge.cs" company="RAGE"> Copyright (c) 2015 RAGE. All rights reserved.
 // </copyright>
 // <author>Veg</author>
 // <date>27-7-2015</date>
@@ -319,8 +319,8 @@ namespace asset_proof_of_concept_demo_CSharp
         ///
         /// <param name="Class"> The class. </param>
         /// <param name="Id">    The identifier. </param>
-        /// <param name="Xml">   The XML. </param>
-        public void SaveDefaultSettings(String Class, String Id, String Xml)
+        /// <param name="fileData">   The File Data. </param>
+        public void SaveDefaultSettings(String Class, String Id, String fileData)
         {
             if (Application.isEditor)
             {

@@ -1,4 +1,4 @@
-﻿namespace AssetPackage
+namespace AssetPackage
 {
     using System;
 
@@ -62,8 +62,8 @@
         ///
         /// <param name="Class"> The class. </param>
         /// <param name="Id">    The identifier. </param>
-        /// <param name="Xml">   The XML. </param>
-        void SaveDefaultSettings(String Class, String Id, String Xml);
+        /// <param name="fileData">   The File Data. </param>
+        void SaveDefaultSettings(String Class, String Id, String fileData);
 
         #endregion Methods
     }

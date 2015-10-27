@@ -43,9 +43,9 @@ namespace AssetPackage
             //{
             //    Console.WriteLine("{0}", name);
             //}
-            XDocument versionXml = VersionAndDependencies();
+            String xml = VersionAndDependencies();
 
-            this.VersionInfo = RageVersionInfo.LoadVersionInfo(versionXml.ToString());
+            this.VersionInfo = RageVersionInfo.LoadVersionInfo(xml);
         }
 
         /// <summary>
@@ -371,28 +371,22 @@ namespace AssetPackage
         /// </summary>
         ///
         /// <returns>
-        /// An XDocument.
+        /// A String.
         /// </returns>
-        /// <summary>
-        /// Version and dependencies.
-        /// </summary>
-        ///
-        /// <returns>
-        /// An XDocument.
-        /// </returns>
-        internal XDocument VersionAndDependencies()
+        internal String VersionAndDependencies()
         {
+
+            // Not PCL
+            // 
+            foreach (String res in GetType().Assembly.GetManifestResourceNames())
+            //{
+            //    Debug.WriteLine(res);
+            //}
+
             //! asset_proof_of_concept_demo_CSharp.Resources.Asset.VersionAndDependencies.xml
             //! <namespace>.Resources.<AssetType>.VersionAndDependencies.xml
             //
             String xml = GetEmbeddedResource(GetType().Namespace, String.Format("Resources.{0}.VersionAndDependencies.xml", GetType().Name));
-
-            // Not PCL
-            // 
-            //foreach (String res in GetType().Assembly.GetManifestResourceNames())
-            //{
-            //    Debug.WriteLine(res);
-            //}
 
             //if (String.IsNullOrEmpty(xml))
             //{
@@ -403,12 +397,7 @@ namespace AssetPackage
             //    xml = er.RetrieveResource(path);
             //}
 
-            if (!String.IsNullOrEmpty(xml))
-            {
-                return XDocument.Parse(xml);
-            }
-
-            return new XDocument();
+            return String.IsNullOrEmpty(xml) ? String.Empty : xml;
         }
 
         /// <summary>

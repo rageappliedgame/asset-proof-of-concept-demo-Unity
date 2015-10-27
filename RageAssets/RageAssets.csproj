@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5F0278C0-1593-448C-AE18-4FCA67D6E0D2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>asset_proof_of_concept_demo_CSharp</RootNamespace>
+    <RootNamespace>AssetPackage</RootNamespace>
     <AssemblyName>RageAssets</AssemblyName>
     <newfilesearch>OnLoad</newfilesearch>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -28,7 +28,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <DocumentationFile>..\Assets\RageAssets.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>

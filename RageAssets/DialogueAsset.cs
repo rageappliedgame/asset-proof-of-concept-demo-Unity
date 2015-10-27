@@ -4,14 +4,13 @@
 // <author>Veg</author>
 // <date>10-4-2015</date>
 // <summary>Implements the DialogueAsset class</summary>
-namespace asset_proof_of_concept_demo_CSharp
+namespace AssetPackage
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
+    using System.Diagnostics;
     using System.Linq;
     using AssetManagerPackage;
-    using AssetPackage;
 
     /// <summary>
     /// A dialogue asset.
@@ -40,7 +39,7 @@ namespace asset_proof_of_concept_demo_CSharp
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the asset_proof_of_concept_demo_CSharp.Logger class.
+        /// Initializes a new instance of the AssetPackage.Logger class.
         /// </summary>
         public DialogueAsset()
             : base()
@@ -187,21 +186,9 @@ namespace asset_proof_of_concept_demo_CSharp
         /// Loads a script.
         /// </summary>
         ///
-        /// <param name="actor"> The actor. </param>
-        /// <param name="ns">    The namespace. </param>
-        /// <param name="res">   The resource. </param>
-        public void LoadScript(String actor, String ns, String res)
-        {
-            LoadScript(actor, GetEmbeddedResource(ns, res));
-        }
-
-        /// <summary>
-        /// Loads a script.
-        /// </summary>
-        ///
         /// <param name="actor">  The actor. </param>
         /// <param name="script"> The script. </param>
-        public void LoadScript(String actor, String script)
+        public void ParseScript(String actor, String script)
         {
             String[] lines = script.Split(new Char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -214,7 +201,7 @@ namespace asset_proof_of_concept_demo_CSharp
                 dialogue.actor = actor;
                 dialogue.next = -1;
 
-                if (!Char.IsNumber(line.First()))
+                if (!Char.IsNumber(line[0])) // .First() is not PCL.
                 {
                     dialogue.id = line.Substring(0, line.IndexOf(':'));
                     dialogue.text = line.Substring(line.IndexOf(':') + 1).Trim();
@@ -262,7 +249,7 @@ namespace asset_proof_of_concept_demo_CSharp
             }
             else
             {
-                Console.WriteLine(msg);
+                Debug.WriteLine(msg);
             }
         }
 

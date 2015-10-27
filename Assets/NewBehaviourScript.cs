@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using asset_proof_of_concept_demo_CSharp;
+using AssetPackage;
 using AssetManagerPackage;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -429,26 +428,44 @@ public class NewBehaviourScript : MonoBehaviour, IPointerClickHandler, IPointerD
     /// <summary>
     /// Tests 07 dialogue asset.
     /// </summary>
-    private static void Test_07_DialogueAsset(NewBehaviourScript script)
+    private static void Test_07_DialogueAsset(NewBehaviourScript scriptResult)
     {
+        const string script =
+@"0 Hi! Welcome to RAGE! Is this your first visit? [1,2]
+1 Yes, I just arrived-> 3
+2 No, I've been here before -> 4
+3 Awesome!Have fun! -> 5
+4 Hey, welcome back -> 5
+5 Do you want to be my friend?[6, 7, 8, 9]
+6 Yes-> 10
+7 No-> 11
+8 Maybe-> 12
+9 Not sure -> 12
+10 Great! -> 13
+11 Awwww-> 13
+12 Please! -> 5
+13 Oh hi -> 13
+banana: I hate bananas
+";
+
         //! DialogAsset.
         //
-        asset5.LoadScript("me", typeof(DialogueAsset).Namespace, "script.txt");
+        asset5.ParseScript("me", script);
 
         // Interacting using ask/tell
-        script.dialogueText.text = asset5.interact("me", "player", "banana").text;
+        scriptResult.dialogueText.text = asset5.interact("me", "player", "banana").text;
 
         //Text go = (Text)GameObject.Find("/Text");
 
         // Interacting using branches
         //
-        script.dialogueText.text = asset5.interact("me", "player").text;
-        script.dialogueText.text = asset5.interact("me", "player", 2).text; //Answer id 2
+        scriptResult.dialogueText.text = asset5.interact("me", "player").text;
+        scriptResult.dialogueText.text = asset5.interact("me", "player", 2).text; //Answer id 2
 
-        script.dialogueText.text = asset5.interact("me", "player").text;
-        script.dialogueText.text = asset5.interact("me", "player", 6).text; //Answer id 6
+        scriptResult.dialogueText.text = asset5.interact("me", "player").text;
+        scriptResult.dialogueText.text = asset5.interact("me", "player", 6).text; //Answer id 6
 
-        script.dialogueText.text = asset5.interact("me", "player").text;
+        scriptResult.dialogueText.text = asset5.interact("me", "player").text;
     }
 
     private static void Test_08_Settings(NewBehaviourScript script)

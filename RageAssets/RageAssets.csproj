@@ -28,6 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
+    <DocumentationFile>..\Assets\RageAssets.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -55,7 +56,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <EmbeddedResource Include="script.txt" />
     <EmbeddedResource Include="Resources\Asset.VersionAndDependencies.xml" />
     <EmbeddedResource Include="Resources\DialogueAsset.VersionAndDependencies.xml" />
     <EmbeddedResource Include="Resources\Logger.VersionAndDependencies.xml" />
@@ -71,7 +71,9 @@
   </Target>
   <Target Name="GenerateMonoSymbols">
     <Message Text="Unity install folder: $(UnityInstallFolder)" Importance="high" />
-    <Message Text="$(ProjectName) -&gt; $(TargetPath).mdb" Importance="High" />
+    <Message Text="$(ProjectName) -&gt; $(AssemblyName).dll" Importance="High" />
+    <Message Text="$(ProjectName) -&gt; $(TargetDir)$(TargetName).mdb" Importance="High" />
+    <Message Text="$(ProjectName) -&gt; $(MSBuildProjectDirectory)\$(OutputPath)" Importance="High" />
     <Exec Command="&quot;$(MonoCLI)&quot; &quot;$(MonoMdbGenerator)&quot; $(AssemblyName).dll" WorkingDirectory="$(MSBuildProjectDirectory)\$(OutputPath)" />
   </Target>
 </Project>

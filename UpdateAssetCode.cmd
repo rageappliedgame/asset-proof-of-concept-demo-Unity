@@ -1,0 +1,3 @@
+cd "C:\Users\Public\Documents\Unity Projects\asset-proof-of-concept-demo-Unity"
+xcopy /s /y "C:\Users\veg\Documents\Visual Studio 2013\Projects\asset-proof-of-concept-demo_CSharp\RageAssetManager" ".\RageAssetManager" /EXCLUDE:UpdateAssetCode.txt 
+xcopy /s /y "C:\Users\veg\Documents\Visual Studio 2013\Projects\asset-proof-of-concept-demo_CSharp\RageAssets" ".\RageAssets" /EXCLUDE:UpdateAssetCode.txt 

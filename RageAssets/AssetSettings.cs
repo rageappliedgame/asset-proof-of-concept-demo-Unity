@@ -1,8 +1,7 @@
-﻿namespace asset_proof_of_concept_demo_CSharp
+﻿namespace AssetPackage
 {
     using System;
     using System.ComponentModel;
-    using System.Drawing;
     using System.Xml.Serialization;
     using AssetPackage;
 
@@ -14,7 +13,7 @@
     public class AssetSettings : BaseSettings
     {
         /// <summary>
-        /// Initializes a new instance of the asset_proof_of_concept_demo_CSharp.AssetSettings class.
+        /// Initializes a new instance of the AssetPackage.AssetSettings class.
         /// </summary>
         public AssetSettings()
             : base()
@@ -41,19 +40,20 @@
             set;
         }
 
-        /// <summary>
-        /// Gets or sets the color of the test.
-        /// </summary>
-        ///
-        /// <value>
-        /// The color of the test.
-        /// </value>
-        [DefaultValue(typeof(Color), "Red")]
-        public Color TestColor
-        {
-            get;
-            set;
-        }
+        // Not Portable to Xamarin.
+        ///// <summary>
+        ///// Gets or sets the color of the test.
+        ///// </summary>
+        /////
+        ///// <value>
+        ///// The color of the test.
+        ///// </value>
+        //[DefaultValue(typeof(Color), "Red")]
+        //public Color TestColor
+        //{
+        //    get;
+        //    set;
+        //}
 
         /// <summary>
         /// Gets the string[].

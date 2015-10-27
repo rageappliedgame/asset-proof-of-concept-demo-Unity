@@ -3,10 +3,10 @@
 // <author>Veg</author>
 // <date>13-4-2015</date>
 // <summary>Implements the logger class</summary>
-namespace asset_proof_of_concept_demo_CSharp
+namespace AssetPackage
 {
     using System;
-    using AssetPackage;
+    using System.Diagnostics;
 
     /// <summary>
     /// A logger.
@@ -16,7 +16,7 @@ namespace asset_proof_of_concept_demo_CSharp
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the asset_proof_of_concept_demo_CSharp.Logger class.
+        /// Initializes a new instance of the AssetPackage.Logger class.
         /// </summary>
         public Logger()
             : base()
@@ -46,7 +46,7 @@ namespace asset_proof_of_concept_demo_CSharp
             else
             {
                 // Default behavior.
-                Console.WriteLine(msg);
+                Debug.WriteLine(msg);
             }
         }
 

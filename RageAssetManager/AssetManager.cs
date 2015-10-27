@@ -4,10 +4,35 @@
 // <author>Veg</author>
 // <date>10-4-2015</date>
 // <summary>Implements the asset manager class</summary>
+
+#region platform notes
+//
+//! Embedded Resources & Android (does seem to apply to pure android code, not the pcl/sap):
+//  See http://developer.xamarin.com/guides/android/application_fundamentals/resources_in_android/part_6_-_using_android_assets/ 
+//  See https://github.com/xamarin/mobile-samples/blob/master/EmbeddedResources/EmbeddedResources.Droid/MainActivity.cs
+// 
+//! Naming:
+//  Xamarin also seems to contain a class called AssetManager.
+//  Xamarin.Droid refuses to load embedded resources outside the 'assets' directory.
+//  
+//! Deployment
+//  Fast Deployment on Android causes problems with resources.
+// 
+//! Localization:
+//   See http://developer.xamarin.com/guides/cross-platform/xamarin-forms/localization/
+//   ResX files seem to be supported.
+//
+//! WinPhone/PCL
+//  WinPhone seems to prefer PCL type assemblies. If the asset code is recompiled as PCL the Android project fails on a List<String> return type. 
+//  The IDataStorage.Files() return type has been changed to String[].
+//  Xpath doesn't seem to be supported in PCL (so a rewrite to the XmlSerializer of Version code was neccesary.
+#endregion platform notes
+
 namespace AssetManagerPackage
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -160,11 +185,11 @@ namespace AssetManagerPackage
 
             String Id = String.Format("{0}_{1}", claz, idGenerator++);
 
-            Console.WriteLine("Registering Asset {0}/{1} as {2}", asset.GetType().Name, claz, Id);
+            Debug.WriteLine(String.Format("Registering Asset {0}/{1} as {2}", asset.GetType().Name, claz, Id));
 
             assets.Add(Id, asset);
 
-            Console.WriteLine("Registered " + assets.Count + " Asset(s)");
+            Debug.WriteLine(String.Format("Registered {0} Asset(s)", assets.Count));
 
             return Id;
         }
@@ -277,6 +302,18 @@ namespace AssetManagerPackage
         }
 
         /// <summary>
+        /// Clears the registration.
+        /// </summary>
+        /// <remarks>Used for cleaning up in test suites (as static readonly _instance member cannot be destroyed).</remarks>
+        [System.Diagnostics.Conditional("DEBUG")]
+        public void ClearRegistration()
+        {
+            idGenerator = 0;
+
+            assets.Clear();
+        }
+
+        /// <summary>
         /// Initialises the event system.
         /// </summary>
         private void initEventSystem()
@@ -289,5 +326,6 @@ namespace AssetManagerPackage
         }
 
         #endregion Methods
+
     }
 }

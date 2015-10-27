@@ -1,0 +1,785 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RageAssetManager</name>
+    </assembly>
+    <members>
+        <member name="T:AssetManagerPackage.AssetManager">
+            <summary>
+            Manager for assets.
+            </summary>
+        </member>
+        <member name="F:AssetManagerPackage.AssetManager._instance">
+            <summary>
+            The instance.
+            </summary>
+        </member>
+        <member name="F:AssetManagerPackage.AssetManager.assets">
+            <summary>
+            The assets.
+            </summary>
+        </member>
+        <member name="F:AssetManagerPackage.AssetManager.idGenerator">
+            <summary>
+            The identifier generator.
+            </summary>
+        </member>
+        <member name="M:AssetManagerPackage.AssetManager.#cctor">
+            <summary>
+            Explicit static constructor tells # compiler not to mark type as beforefieldinit.
+            </summary>
+        </member>
+        <member name="M:AssetManagerPackage.AssetManager.#ctor">
+            <summary>
+            Prevents a default instance of the AssetManager class from being created.
+            </summary>
+        </member>
+        <member name="P:AssetManagerPackage.AssetManager.Instance">
+             <summary>
+             Visible when reflecting.
+             </summary>
+            
+             <value>
+             The instance.
+             </value>
+        </member>
+        <member name="P:AssetManagerPackage.AssetManager.Bridge">
+             <summary>
+             Gets or sets the bridge.
+             </summary>
+            
+             <value>
+             The bridge.
+             </value>
+        </member>
+        <member name="M:AssetManagerPackage.AssetManager.findAssetByClass(System.String)">
+             <summary>
+             Searches for the first asset by class.
+             </summary>
+            
+             <param name="claz"> The claz. </param>
+            
+             <returns>
+             The found asset by class.
+             </returns>
+        </member>
+        <member name="M:AssetManagerPackage.AssetManager.findAssetById(System.String)">
+             <summary>
+             Searches for the first asset by identifier.
+             </summary>
+            
+             <param name="id"> The identifier. </param>
+            
+             <returns>
+             The found asset by identifier.
+             </returns>
+        </member>
+        <member name="M:AssetManagerPackage.AssetManager.findAssetsByClass(System.String)">
+             <summary>
+             Searches for assets by class.
+             </summary>
+            
+             <param name="claz"> The claz. </param>
+            
+             <returns>
+             The found assets by class.
+             </returns>
+        </member>
+        <member name="M:AssetManagerPackage.AssetManager.registerAssetInstance(AssetPackage.IAsset,System.String)">
+             <summary>
+             Registers the asset instance.
+             </summary>
+            
+             <param name="asset"> The asset. </param>
+             <param name="claz">  The claz. </param>
+            
+             <returns>
+             A String.
+             </returns>
+        </member>
+        <member name="P:AssetManagerPackage.AssetManager.VersionAndDependenciesReport">
+             <summary>
+             Reports version and dependencies.
+             </summary>
+            
+             <value>
+             The version and dependencies report.
+             </value>
+        </member>
+        <member name="M:AssetManagerPackage.AssetManager.ClearRegistration">
+            <summary>
+            Clears the registration.
+            </summary>
+            <remarks>Used for cleaning up in test suites (as static readonly _instance member cannot be destroyed).</remarks>
+        </member>
+        <member name="M:AssetManagerPackage.AssetManager.initEventSystem">
+            <summary>
+            Initialises the event system.
+            </summary>
+        </member>
+        <member name="T:AssetManagerPackage.pubsubz">
+            <summary>
+            A pubsubz.
+            </summary>
+        </member>
+        <member name="F:AssetManagerPackage.pubsubz.subUid">
+            <summary>
+            The sub UID.
+            </summary>
+        </member>
+        <member name="F:AssetManagerPackage.pubsubz.topics">
+            <summary>
+            The topics.
+            </summary>
+        </member>
+        <member name="T:AssetManagerPackage.pubsubz.TopicEvent">
+             <summary>
+             Topic event.
+             </summary>
+            
+             <param name="topic"> The topic. </param>
+             <param name="args">  A variable-length parameters list containing arguments. </param>
+        </member>
+        <member name="M:AssetManagerPackage.pubsubz.define(System.String)">
+             <summary>
+             Defines.
+             </summary>
+            
+             <param name="topic"> The topic. </param>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
+        <member name="M:AssetManagerPackage.pubsubz.publish(System.String,System.Object[])">
+             <summary>
+             Publishes.
+             </summary>
+            
+             <param name="topic"> The topic. </param>
+             <param name="args">  A variable-length parameters list containing arguments. </param>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
+        <member name="M:AssetManagerPackage.pubsubz.subscribe(System.String,AssetManagerPackage.pubsubz.TopicEvent)">
+             <summary>
+             Subscribes.
+             </summary>
+            
+             <param name="topic"> The topic. </param>
+             <param name="func">  The function. </param>
+            
+             <returns>
+             A String.
+             </returns>
+        </member>
+        <member name="M:AssetManagerPackage.pubsubz.unsubscribe(System.String)">
+             <summary>
+             Unsubscribes.
+             </summary>
+            
+             <param name="token"> The token. </param>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
+        <member name="T:AssetManagerPackage.RageVersionInfo">
+            <summary>
+            Information about the rage version.
+            </summary>
+        </member>
+        <member name="M:AssetManagerPackage.RageVersionInfo.#ctor">
+            <summary>
+            Initializes a new instance of the AssetManagerPackage.RageVersionInfo
+            class.
+            </summary>
+        </member>
+        <member name="P:AssetManagerPackage.RageVersionInfo.Id">
+             <summary>
+             Gets or sets the identifier.
+             </summary>
+            
+             <value>
+             The identifier.
+             </value>
+        </member>
+        <member name="P:AssetManagerPackage.RageVersionInfo.Major">
+             <summary>
+             Gets or sets the major.
+             </summary>
+            
+             <value>
+             The major.
+             </value>
+        </member>
+        <member name="P:AssetManagerPackage.RageVersionInfo.Minor">
+             <summary>
+             Gets or sets the minor.
+             </summary>
+            
+             <value>
+             The minor.
+             </value>
+        </member>
+        <member name="P:AssetManagerPackage.RageVersionInfo.Build">
+             <summary>
+             Gets or sets the build.
+             </summary>
+            
+             <value>
+             The build.
+             </value>
+        </member>
+        <member name="P:AssetManagerPackage.RageVersionInfo.Revision">
+             <summary>
+             Gets or sets the revision.
+             </summary>
+            
+             <value>
+             The revision.
+             </value>
+        </member>
+        <member name="P:AssetManagerPackage.RageVersionInfo.Maturity">
+             <summary>
+             Gets or sets the maturity.
+             </summary>
+            
+             <value>
+             The maturity.
+             </value>
+        </member>
+        <member name="P:AssetManagerPackage.RageVersionInfo.Dependencies">
+             <summary>
+             Gets or sets the dependencies.
+             </summary>
+            
+             <value>
+             The dependencies.
+             </value>
+        </member>
+        <member name="M:AssetManagerPackage.RageVersionInfo.LoadVersionInfo(System.String)">
+             <summary>
+             Loads version information.
+             </summary>
+            
+             <param name="xml"> The XML. </param>
+        </member>
+        <member name="M:AssetManagerPackage.RageVersionInfo.SaveVersionInfo">
+             <summary>
+             Saves the version information.
+             </summary>
+            
+             <returns>
+             A String.
+             </returns>
+        </member>
+        <member name="T:AssetManagerPackage.RageVersionInfo.StringWriterUtf8">
+             <summary>
+             A string writer utf-8.
+             </summary>
+            
+             <remarks>
+             Fix-up for XDocument Serialization defaulting to utf-16.
+             </remarks>
+        </member>
+        <member name="T:AssetManagerPackage.Dependencies">
+            <summary>
+            A dependencies.
+            </summary>
+        </member>
+        <member name="M:AssetManagerPackage.Dependencies.#ctor">
+            <summary>
+            Initializes a new instance of the AssetManagerPackage.dependencies
+            class.
+            </summary>
+        </member>
+        <member name="T:AssetManagerPackage.Depends">
+            <summary>
+            A dependency.
+            </summary>
+        </member>
+        <member name="M:AssetManagerPackage.Depends.#ctor">
+            <summary>
+            Initializes a new instance of the AssetManagerPackage.Dependency
+            class.
+            </summary>
+        </member>
+        <member name="P:AssetManagerPackage.Depends.minVersion">
+             <summary>
+             Gets or sets the minimum version.
+             </summary>
+            
+             <value>
+             The minimum version.
+             </value>
+        </member>
+        <member name="P:AssetManagerPackage.Depends.maxVersion">
+             <summary>
+             Gets or sets the maximum version.
+             </summary>
+            
+             <value>
+             The maximum version.
+             </value>
+        </member>
+        <member name="P:AssetManagerPackage.Depends.name">
+             <summary>
+             Gets or sets the name.
+             </summary>
+            
+             <value>
+             The name.
+             </value>
+        </member>
+        <member name="T:AssetPackage.BaseAsset">
+            <summary>
+            A base asset.
+            </summary>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.#ctor">
+            <summary>
+            Initializes a new instance of the AssetManagerPackage.BaseAsset class.
+            </summary>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.#ctor(AssetPackage.IBridge)">
+             <summary>
+             Initializes a new instance of the AssetPackage.BaseAsset class.
+             </summary>
+            
+             <param name="bridge"> The bridge. </param>
+        </member>
+        <member name="P:AssetPackage.BaseAsset.Bridge">
+             <summary>
+             Gets or sets the bridge.
+             </summary>
+            
+             <value>
+             The bridge.
+             </value>
+        </member>
+        <member name="P:AssetPackage.BaseAsset.Class">
+             <summary>
+             Gets the class.
+             </summary>
+            
+             <value>
+             The class.
+             </value>
+        </member>
+        <member name="P:AssetPackage.BaseAsset.Dependencies">
+             <summary>
+             Gets the dependencies.
+             </summary>
+            
+             <value>
+             The dependencies.
+             </value>
+        </member>
+        <member name="P:AssetPackage.BaseAsset.hasSettings">
+             <summary>
+             Gets a value indicating whether this object has settings.
+             </summary>
+            
+             <value>
+             true if this object has settings, false if not.
+             </value>
+        </member>
+        <member name="P:AssetPackage.BaseAsset.Id">
+             <summary>
+             Gets the identifier.
+             </summary>
+            
+             <value>
+             The identifier.
+             </value>
+        </member>
+        <member name="P:AssetPackage.BaseAsset.Maturity">
+             <summary>
+             Gets the maturity.
+             </summary>
+            
+             <value>
+             The maturity.
+             </value>
+        </member>
+        <member name="P:AssetPackage.BaseAsset.Settings">
+             <summary>
+             Gets or sets options for controlling the operation.
+             </summary>
+            
+             <value>
+             The settings.
+             </value>
+        </member>
+        <member name="P:AssetPackage.BaseAsset.Version">
+             <summary>
+             Gets the version.
+             </summary>
+            
+             <value>
+             The version.
+             </value>
+        </member>
+        <member name="P:AssetPackage.BaseAsset.VersionInfo">
+             <summary>
+             Gets information describing the version.
+             </summary>
+            
+             <value>
+             Information describing the version.
+             </value>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.LoadDefaultSettings">
+             <summary>
+             Loads Settings object from Default (Design-time) Settings.
+             </summary>
+            
+             <remarks>
+             In Unity Resources.Load() must be used and the files will be loaded a Assets\\Resources
+             Folder.
+             </remarks>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.LoadSettings(System.String)">
+             <summary>
+             Loads Settings object as Run-time Settings.
+             </summary>
+            
+             <remarks>
+             The resulting file will be read using the IDataStorage interface.
+             </remarks>
+            
+             <param name="filename"> Filename of the file. </param>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.SaveDefaultSettings(System.Boolean)">
+             <summary>
+             Saves Settings object as Default (Design-time) Settings.
+             </summary>
+            
+             <remarks>
+             In Unity the file will be saved in a Assets\\Resources Folder in the editor environment (As
+             resources are read-only at run-time).
+             </remarks>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.SaveSettings(System.String)">
+             <summary>
+             Loads Settings object from Run-time Settings.
+             </summary>
+            
+             <remarks>
+             The resulting file will be written using the IDataStorage interface.
+             </remarks>
+            
+             <param name="filename"> Filename of the file. </param>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.SettingsFromXml(System.String)">
+             <summary>
+             Settings from XML.
+             </summary>
+            
+             <param name="xml"> The XML. </param>
+            
+             <returns>
+             The ISettings.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.SettingsToXml">
+             <summary>
+             Settings to XML.
+             </summary>
+            
+             <returns>
+             A String.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.VersionAndDependencies">
+             <summary>
+             Version and dependencies.
+             </summary>
+            
+             <returns>
+             An XDocument.
+             </returns>
+             <summary>
+             Version and dependencies.
+             </summary>
+            
+             <returns>
+             An XDocument.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.GetEmbeddedResource(System.String,System.String)">
+             <summary>
+             Gets embedded resource.
+             </summary>
+            
+             <param name="ns">  The namespace. </param>
+             <param name="res"> The resource name. </param>
+            
+             <returns>
+             The embedded resource.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.BaseAsset.getInterface``1">
+             <summary>
+             Gets the interface.
+             </summary>
+            
+             <typeparam name="T"> Generic type parameter. </typeparam>
+            
+             <returns>
+             The interface.
+             </returns>
+        </member>
+        <member name="T:AssetPackage.BaseAsset.StringWriterUtf8">
+             <summary>
+             A string writer utf-8.
+             </summary>
+            
+             <remarks>
+             Fix-up for XDocument Serialization defaulting to utf-16.
+             </remarks>
+        </member>
+        <member name="T:AssetPackage.BaseSettings">
+            <summary>
+            A base settings.
+            </summary>
+        </member>
+        <member name="M:AssetPackage.BaseSettings.#ctor">
+            <summary>
+            Initializes a new instance of the Swiss.BaseSettings class.
+            </summary>
+        </member>
+        <member name="M:AssetPackage.BaseSettings.UpdateDefaultValues">
+            <summary>
+            Set the value of (Public Instance) properties to the <see cref="T:System.ComponentModel.DefaultValueAttribute"/>'s
+            Value of that property.
+            </summary>
+        </member>
+        <member name="M:AssetPackage.BaseSettings.UpdateDefaultValues(System.Object)">
+             <summary>
+             Set the value of (Public Instance) properties to the
+             <see cref="T:System.ComponentModel.DefaultValueAttribute"/>'s Value of that property.
+             </summary>
+            
+             <param name="obj"> The object. </param>
+        </member>
+        <member name="T:AssetPackage.IAsset">
+            <summary>
+            Interface for asset.
+            </summary>
+        </member>
+        <member name="P:AssetPackage.IAsset.Class">
+             <summary>
+             Gets the class.
+             </summary>
+            
+             <value>
+             The class.
+             </value>
+        </member>
+        <member name="P:AssetPackage.IAsset.Dependencies">
+             <summary>
+             Gets the dependencies.
+             </summary>
+            
+             <value>
+             The dependencies (A Dictionary of class=version pairs).
+             </value>
+        </member>
+        <member name="P:AssetPackage.IAsset.Id">
+             <summary>
+             Gets the identifier.
+             </summary>
+            
+             <value>
+             The identifier.
+             </value>
+        </member>
+        <member name="P:AssetPackage.IAsset.Maturity">
+             <summary>
+             Gets the maturity.
+             </summary>
+            
+             <value>
+             The maturity.
+             </value>
+        </member>
+        <member name="P:AssetPackage.IAsset.Settings">
+             <summary>
+             Gets or sets options for controlling the operation.
+             </summary>
+            
+             <value>
+             The settings.
+             </value>
+        </member>
+        <member name="P:AssetPackage.IAsset.Version">
+             <summary>
+             Gets the version.
+             </summary>
+            
+             <value>
+             The version.
+             </value>
+        </member>
+        <member name="P:AssetPackage.IAsset.Bridge">
+             <summary>
+             Gets or sets the bridge.
+             </summary>
+            
+             <value>
+             The bridge.
+             </value>
+        </member>
+        <member name="T:AssetPackage.IBridge">
+            <summary>
+            Interface for bridge.
+            </summary>
+        </member>
+        <member name="T:AssetPackage.IDataStorage">
+            <summary>
+            Interface for data storage.
+            </summary>
+        </member>
+        <member name="M:AssetPackage.IDataStorage.Delete(System.String)">
+             <summary>
+             Deletes the given fileId.
+             </summary>
+            
+             <param name="fileId"> The file identifier to delete. </param>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.IDataStorage.Exists(System.String)">
+             <summary>
+             Exists the given file.
+             </summary>
+            
+             <param name="fileId"> The file identifier to delete. </param>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.IDataStorage.Files">
+             <summary>
+             Gets the files.
+             </summary>
+            
+             <remarks>
+             A List&lt;String&gt; gave problems when compiled as PCL and added to a
+             Xamarin Forms project containing iOS, Android and WinPhone subprojects.
+             </remarks>
+            
+             <returns>
+             An array of filenames.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.IDataStorage.Load(System.String)">
+             <summary>
+             Loads the given file.
+             </summary>
+            
+             <param name="fileId"> The file identifier to delete. </param>
+            
+             <returns>
+             A String.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.IDataStorage.Save(System.String,System.String)">
+             <summary>
+             Saves the given file.
+             </summary>
+            
+             <param name="fileId">   The file identifier to delete. </param>
+             <param name="fileData"> Information describing the file. </param>
+        </member>
+        <member name="T:AssetPackage.IDefaultSettings">
+             <summary>
+             Interface for default settings.<br /><br />This Interface is used to:
+             <list type="bullet">
+             <item>Check if an asset has default
+             (application) settings that override build-in default settings.</item>
+             <item>Load these settings from the game environment.</item>
+             <item>In certain environments write the actual settings as application defaults. This could
+             for instance be Unity in editor mode.</item>
+             </list>
+             </summary>
+            
+             <remarks>
+             <para>Default settings and application default settings are read-only at run-
+             time.</para><para>If modification and storage is needed at run-time,
+             the<see cref="T:AssetPackage.IDataStorage"/>interface could be used
+             i.c.m.<see cref="T:AssetPackage.ISettings"/>Methods.</para>
+             <para>This interface, if implemented in a bridge, allows to check if:</para>
+             </remarks>
+        </member>
+        <member name="M:AssetPackage.IDefaultSettings.HasDefaultSettings(System.String,System.String)">
+             <summary>
+             Query if a 'Class' with Id has default settings.
+             </summary>
+            
+             <param name="Class"> The class. </param>
+             <param name="Id">    The identifier. </param>
+            
+             <returns>
+             true if default settings, false if not.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.IDefaultSettings.LoadDefaultSettings(System.String,System.String)">
+             <summary>
+             Loads default settings for a 'Class' with Id.
+             </summary>
+            
+             <remarks>
+             Note that in Unity the file has to be located in the Resource Directory of the Assets Folder.
+             </remarks>
+            
+             <param name="Class"> The class. </param>
+             <param name="Id">    The identifier. </param>
+            
+             <returns>
+             The default settings.
+             </returns>
+        </member>
+        <member name="M:AssetPackage.IDefaultSettings.SaveDefaultSettings(System.String,System.String,System.String)">
+             <summary>
+             Saves a default settings for a 'Class' with Id.
+             </summary>
+            
+             <remarks>
+             This method can only be used during editing the game (so NOT at run-time).
+             </remarks>
+            
+             <param name="Class">    The class. </param>
+             <param name="Id">       The identifier. </param>
+             <param name="fileData"> The File Data. </param>
+        </member>
+        <member name="T:AssetPackage.ISettings">
+            <summary>
+            Interface for settings.
+            </summary>
+        </member>
+    </members>
+</doc>

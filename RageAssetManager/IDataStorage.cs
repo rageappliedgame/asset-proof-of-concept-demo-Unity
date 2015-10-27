@@ -41,10 +41,15 @@ namespace AssetPackage
         /// Gets the files.
         /// </summary>
         ///
+        /// <remarks>
+        /// A List&lt;String&gt; gave problems when compiled as PCL and added to a
+        /// Xamarin Forms project containing iOS, Android and WinPhone subprojects.
+        /// </remarks>
+        ///
         /// <returns>
-        /// A List&lt;String&gt;
+        /// An array of filenames.
         /// </returns>
-        List<String> Files();
+        String[] Files();
 
         /// <summary>
         /// Loads the given file.

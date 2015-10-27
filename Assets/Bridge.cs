@@ -5,7 +5,7 @@
 // <summary>Implements a Bridge with 3 interfaces</summary>
 using UnityEngine;
 
-namespace asset_proof_of_concept_demo_CSharp
+namespace AssetPackage
 {
     using System;
     using System.Collections.Generic;
@@ -146,12 +146,12 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <returns>
         /// A List&lt;String&gt;
         /// </returns>
-        public List<String> Files()
+        public String[] Files()
         {
             return Directory.GetFiles(StorageDir).ToList().ConvertAll(
                 new Converter<String, String>(p => p
                     .Replace(StorageDir, "")
-                    .TrimStart(Path.DirectorySeparatorChar))).ToList();
+                    .TrimStart(Path.DirectorySeparatorChar))).ToArray();
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace asset_proof_of_concept_demo_CSharp
         {
             if (Application.isEditor)
             {
-                File.WriteAllText(Path.Combine(ResourceDir, DeriveAssetName(Class, Id) + ".xml"), Xml);
+                File.WriteAllText(Path.Combine(ResourceDir, DeriveAssetName(Class, Id) + ".xml"), fileData);
             }
             else
             {

@@ -4,7 +4,7 @@
 // <author>Veg</author>
 // <date>10-4-2015</date>
 // <summary>Implements the asset class</summary>
-namespace asset_proof_of_concept_demo_CSharp
+namespace AssetPackage
 {
     using System;
     using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace asset_proof_of_concept_demo_CSharp
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the asset_proof_of_concept_demo_CSharp.Asset class.
+        /// Initializes a new instance of the AssetPackage.Asset class.
         /// </summary>
         public Asset()
             : base()
@@ -111,7 +111,7 @@ namespace asset_proof_of_concept_demo_CSharp
         /// <returns>
         /// A List&lt;String&gt;
         /// </returns>
-        public List<String> doList()
+        public String[] doList()
         {
             IDataStorage ds = getInterface<IDataStorage>();
 
@@ -121,7 +121,7 @@ namespace asset_proof_of_concept_demo_CSharp
             }
             else
             {
-                return FileStorage.Keys.ToList();
+                return FileStorage.Keys.ToArray();
             }
         }
 
